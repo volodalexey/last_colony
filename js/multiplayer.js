@@ -1,6 +1,6 @@
 var multiplayer = {
     // Open multiplayer game lobby
-    websocket_url:"ws://localhost:8080/",
+    websocket_url:"ws://localhost:8181/",
     websocket:undefined,
 	start:function(){
 		game.type = "multiplayer";
@@ -57,7 +57,7 @@ var multiplayer = {
 				break;        
         }        
     },
-    statusMessages:{
+    statusMessages: {
         'starting':'Game Starting',
         'running':'Game in Progress',
         'waiting':'Awaiting second player',

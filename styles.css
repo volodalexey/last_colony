@@ -125,7 +125,7 @@
     top:154px;
     width:126px;
     height:88px;
-    overflow:none;
+    overflow: hidden;
 }
 
 #gameinterfacescreen #cash {
@@ -162,7 +162,7 @@
     top:305px;
     width:152px;
     height:148px;
-    overflow:none;
+    overflow: hidden;
 }
 
 #gameinterfacescreen #sidebarbuttons input[type="button"] {
@@ -242,7 +242,6 @@
     left:140px;
     width:296px;
     height:178px;
-    color:white;
     background:url(images/messagebox.png) no-repeat center;
     color:rgb(130,150,162);
     overflow:hidden;
