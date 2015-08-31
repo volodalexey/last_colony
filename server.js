@@ -69,6 +69,10 @@ var server = http.createServer(function(req, res) {
             contentType = 'image/jpg';
             encoding = 'binary';
             break;
+        case '.ico':
+            contentType = 'image/x-icon';
+            encoding = 'binary';
+            break;
         case '.gif':
             contentType = 'image/gif';
             encoding = 'binary';
