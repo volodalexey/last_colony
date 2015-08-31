@@ -1,0 +1,11 @@
+{
+  "name": "last_colony",
+  "version": "0.0.1",
+  "author": "Alexey Volodko",
+  "description": "Refactored from http://www.adityaravishankar.com/pro-html5-games/ ",
+  "main": "server.js",
+  "private": true,
+  "dependencies": {
+    "websocket": "^1.0.21"
+  }
+}
