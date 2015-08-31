@@ -1,5 +1,5 @@
 ## Last Colony (HTML5 game)
-Originally created by [Aditya Ravi Shankar](http://www.adityaravishankar.com/pro-html5-games/). Refactored by [volodalexey](https://github.com/volodalexey) to use modern javascript and Node.js features.
+Originally created by [Aditya Ravi Shankar](http://adityaravishankar.com/pro-html5-games/). Refactored by [volodalexey](https://github.com/volodalexey) to use modern javascript and Node.js features.
 
 ### Setup
 
@@ -24,7 +24,7 @@ Navigate to [localhost:8181](http://localhost:8181) in your browser
 
 ### Credits
 
-- Game by Aditya Ravi Shankar (http://www.adityaravishankar.com/)
-- "Hard Vaccum" Artwork and Game Sprites by Daniel Cook (http://www.lostgarden.com/)
+- Game by Aditya Ravi Shankar (http://adityaravishankar.com/)
+- "Hard Vaccum" Artwork and Game Sprites by Daniel Cook (http://lostgarden.com/)
 - Artwork from Open Game Art (http://opengameart.org)
-- Sounds from (http://www.freesound.org/)
+- Sounds from (http://freesound.org/)
