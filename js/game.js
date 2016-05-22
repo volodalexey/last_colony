@@ -5,13 +5,12 @@ window.onload = function() {
 var game = {
     // Start preloading assets
 	init:function(){
-		loader.init();
 		mouse.init();
 		sidebar.init();
 		sounds.init();
 
-		document.querySelector('.gamelayer').hide();
-		document.querySelector('#gamestartscreen').show();
+		document.querySelector('.gamelayer').style.display = 'none';
+		document.querySelector('#gamestartscreen').style.display = 'block';
 
 		game.backgroundCanvas = document.getElementById('gamebackgroundcanvas');
 		game.backgroundContext = game.backgroundCanvas.getContext('2d');
@@ -23,8 +22,8 @@ var game = {
 		game.canvasHeight = game.backgroundCanvas.height;
 	},
     start:function(){
-			document.querySelector('.gamelayer').hide();
-			document.querySelector('#gameinterfacescreen').show();
+			document.querySelector('.gamelayer').style.display = 'none';
+			document.querySelector('#gameinterfacescreen').style.display = 'block';
 		game.running = true;
 		game.refreshBackground = true;
 		
@@ -376,7 +375,7 @@ var game = {
 	    var existingMessage = document.querySelector('#gamemessages').innerHTML;
 	    var newMessage = existingMessage+'<span>'+from+': </span>'+message+'<br>';
 		document.querySelector('#gamemessages').innerHTML = newMessage;
-		document.querySelector('#gamemessages').animate({scrollTop:document.querySelector('#gamemessages').prop('scrollHeight')});
+		document.querySelector('#gamemessages').scrollIntoView();
 	},
 	/* Message Box related code*/
 	messageBoxOkCallback:undefined,

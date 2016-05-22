@@ -9,7 +9,7 @@
     }
  
     if (!window.requestAnimationFrame)
-        window.requestAnimationFrame = function(callback, element) {
+        window.requestAnimationFrame = function(callback) {
             var currTime = new Date().getTime();
             var timeToCall = Math.max(0, 16 - (currTime - lastTime));
             var id = window.setTimeout(function() { callback(currTime + timeToCall); }, 
@@ -28,24 +28,6 @@ var loader = {
     loaded:true,
     loadedCount:0, // Assets that have been loaded so far
     totalCount:0, // Total number of assets that need to be loaded
-    
-    init:function(){
-        // check for sound support
-        var mp3Support,oggSupport;
-        var audio = document.createElement('audio');
-    	if (audio.canPlayType) {
-       		// Currently canPlayType() returns: "", "maybe" or "probably" 
-      		mp3Support = "" != audio.canPlayType('audio/mpeg');
-      		oggSupport = "" != audio.canPlayType('audio/ogg; codecs="vorbis"');
-    	} else {
-    		//The audio tag is not supported
-    		mp3Support = false;
-    		oggSupport = false;	
-    	}
-
-        // Check for ogg, then mp3, and finally set soundFileExtn to undefined
-        loader.soundFileExtn = oggSupport?".ogg":mp3Support?".mp3":undefined;        
-    },
     loadImage:function(url){
         this.totalCount++;
         this.loaded = false;
@@ -77,7 +59,7 @@ var loader = {
             }
         }
     }
-}
+};
 
 /* The default load() method used by all our game entities*/
 function loadItem(name){
