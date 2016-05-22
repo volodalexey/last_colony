@@ -1,6 +1,6 @@
-$(window).load(function() {
+window.onload = function() {
 	game.init();
-});
+};
 
 var game = {
     // Start preloading assets
@@ -10,8 +10,8 @@ var game = {
 		sidebar.init();
 		sounds.init();
 
-		$('.gamelayer').hide();
-		$('#gamestartscreen').show();
+		document.querySelector('.gamelayer').hide();
+		document.querySelector('#gamestartscreen').show();
 
 		game.backgroundCanvas = document.getElementById('gamebackgroundcanvas');
 		game.backgroundContext = game.backgroundCanvas.getContext('2d');
@@ -23,19 +23,19 @@ var game = {
 		game.canvasHeight = game.backgroundCanvas.height;
 	},
     start:function(){
-        $('.gamelayer').hide();
-        $('#gameinterfacescreen').show();
+			document.querySelector('.gamelayer').hide();
+			document.querySelector('#gameinterfacescreen').show();
 		game.running = true;
 		game.refreshBackground = true;
 		
 		game.drawingLoop();
 
-		$('#gamemessages').html("");
+			document.querySelector('#gamemessages').innerHTML = "";
         
         // Initialize All Game Triggers
         for (var i = game.currentLevel.triggers.length - 1; i >= 0; i--){
             game.initTrigger(game.currentLevel.triggers[i]);
-        };        
+        }
     },
 	
 	// The map is broken into square tiles of this size (20 pixels x 20 pixels)
@@ -102,7 +102,7 @@ var game = {
 	    };
 
 	    // Sort game items into a sortedItems array based on their x,y coordinates
-	    game.sortedItems = $.extend([],game.items);        
+	    game.sortedItems = Object.assign([], game.items);
 	    game.sortedItems.sort(function(a,b){
 	        return b.y-a.y + ((b.y==a.y)?(a.x-b.x):0);
 	    });
@@ -288,7 +288,7 @@ var game = {
 			var item = game.getItemByUid(uid);
 			//if uid is a valid item, set the order for the item
 			if(item){
-				item.orders = $.extend([],details);	
+				item.orders = Object.assign([], details);
 				if(toObject) {
 					item.orders.to = toObject;					
 				}
@@ -299,7 +299,7 @@ var game = {
 	speedAdjustmentFactor:1/64, 
 	turnSpeedAdjustmentFactor:1/8,
 	rebuildPassableGrid:function(){
-	    game.currentMapPassableGrid = $.extend(true,[],game.currentMapTerrainGrid);
+	    game.currentMapPassableGrid = Object.assign([], game.currentMapTerrainGrid);
 	    for (var i = game.items.length - 1; i >= 0; i--){
 	        var item = game.items[i];
 	        if(item.type == "buildings" || item.type == "terrain"){
@@ -314,7 +314,7 @@ var game = {
 	    };        
 	}, 
 	rebuildBuildableGrid:function(){
-	    game.currentMapBuildableGrid = $.extend(true,[],game.currentMapTerrainGrid);
+	    game.currentMapBuildableGrid = Object.assign([], game.currentMapTerrainGrid);
 	    for (var i = game.items.length - 1; i >= 0; i--){
 	        var item = game.items[i];
 	        if(item.type == "buildings" || item.type == "terrain"){
@@ -365,25 +365,25 @@ var game = {
 	    if (character){
 	        from = character.name;
 	        if (character.image){
-	            $('#callerpicture').html('<img src="'+character.image+'"/>');
+						document.querySelector('#callerpicture').innerHTML = '<img src="'+character.image+'"/>';
 	            // hide the profile picture after six seconds
 	            setTimeout(function(){
-	                $('#callerpicture').html("");
+								document.querySelector('#callerpicture').innerHTML = '';
 	            },6000)    
 	        }
 	    }
 	    // Append message to messages pane and scroll to the bottom
-	    var existingMessage = $('#gamemessages').html();
+	    var existingMessage = document.querySelector('#gamemessages').innerHTML;
 	    var newMessage = existingMessage+'<span>'+from+': </span>'+message+'<br>';
-	    $('#gamemessages').html(newMessage);
-	    $('#gamemessages').animate({scrollTop:$('#gamemessages').prop('scrollHeight')});
+		document.querySelector('#gamemessages').innerHTML = newMessage;
+		document.querySelector('#gamemessages').animate({scrollTop:document.querySelector('#gamemessages').prop('scrollHeight')});
 	},
 	/* Message Box related code*/
 	messageBoxOkCallback:undefined,
 	messageBoxCancelCallback:undefined,
 	showMessageBox:function(message,onOK,onCancel){
 	    // Set message box text
-	    $('#messageboxtext').html(message);
+		document.querySelector('#messageboxtext').innerHTML = message;
 
 	    // Set message box ok and cancel handlers and enable buttons
 	    if(!onOK){
@@ -393,24 +393,24 @@ var game = {
 	    }    
 
 	    if(!onCancel){
-	        game.messageBoxCancelCallback = undefined;            
-	        $("#messageboxcancel").hide();
+	        game.messageBoxCancelCallback = undefined;
+				document.querySelector("#messageboxcancel").style.display = 'none';
 	    } else {
 	        game.messageBoxCancelCallback = onCancel;
-	        $("#messageboxcancel").show();
+				document.querySelector("#messageboxcancel").style.display = 'block';
 	    }
 
 	    // Display the message box and wait for user to click a button
-	    $('#messageboxscreen').show();                
+		document.querySelector('#messageboxscreen').show();
 	},
 	messageBoxOK:function(){
-	    $('#messageboxscreen').hide();
+	    document.querySelector('#messageboxscreen').style.display = 'none';
 	    if(game.messageBoxOkCallback){
 	        game.messageBoxOkCallback()
 	    }            
 	},
 	messageBoxCancel:function(){
-	    $('#messageboxscreen').hide();
+		document.querySelector('#messageboxscreen').style.display = 'none';
 	    if(game.messageBoxCancelCallback){
 	        game.messageBoxCancelCallback();
 	    }            
