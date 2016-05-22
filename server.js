@@ -5,16 +5,45 @@ const
   fs = require('fs'),
   rootFile = 'index.html',
   rootFilePath = path.join(__dirname, rootFile),
-  port = 8181,
+  server_port = process.env.PORT || 8181,
+  server_ip_address = process.env.IP || 'localhost',
   server = http.createServer(),
   WebSocket = require('ws'),
   WebSocketServer = WebSocket.Server,
   webSocketServer = new WebSocketServer({server: server});
 
-// convert any objects to JSON string format
-var toJSON = function(_object) {
-  return JSON.stringify(_object);
-};
+const
+  /**
+   * convert any objects to JSON string format
+   */
+  toJSON = function(_object) {
+    return JSON.stringify(_object);
+  },
+  safe = function() {
+    let arg = Array.from(arguments),
+      func = arg[0], data = arg.length > 1;
+    if (data) {
+      arg.splice(0, 1);
+    }
+    if (!func || typeof func !== 'function') {
+      throw new Error('Invalid use!');
+    }
+    let result;
+    try {
+      if (data) {
+        result = func.apply(data);
+      } else {
+        result = func();
+      }
+    } catch (e) {
+      console.error(e);
+    }
+    return result;
+  },
+  safeToJSON = function() {
+    let data = Array.from(arguments);
+    return safe(toJSON, data);
+  };
 
 // read async file by provided path
 var readStaticFile = function(options, req, res) {
@@ -100,7 +129,7 @@ server.on('request', function(req, res) {
   }
 });
 
-server.listen(port, function(err) {
+server.listen(server_port, server_ip_address, (err) => {
   if (err) {
     return console.error(err);
   }
@@ -175,7 +204,7 @@ const
     }
     // Confirm to player that he was added
     let confirmationMessageString = JSON.stringify({type: "joined_room", roomId: roomId, color: player.color});
-    player.connection.send(confirmationMessageString);
+    player.wsc.send(confirmationMessageString);
     return room;
   },
   leaveRoom = function(player, roomId) {
@@ -197,7 +226,7 @@ const
   sendRoomWebSocketMessage = function(room, messageObject) {
     let messageString = JSON.stringify(messageObject);
     for (let i = room.players.length - 1; i >= 0; i--) {
-      room.players[i].connection.send(messageString);
+      room.players[i].wsc.send(messageString);
     }
   },
   startGame = function(room) {
