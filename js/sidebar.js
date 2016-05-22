@@ -1,7 +1,7 @@
 var sidebar = {
 	enableSidebarButtons:function(){
 		// Buttons only enabled when appropriate building is selected
-		document.querySelector("#gameinterfacescreen #sidebarbuttons input[type='button'] ").disabled = true;		
+		$("#gameinterfacescreen #sidebarbuttons input[type='button'] ").attr("disabled", true);		
 		
 		// If no building selected, then no point checking below
 		if (game.selectedItems.length==0){		
@@ -20,16 +20,16 @@ var sidebar = {
 					starportSelected = true;
 				}	
 			}
-		}
+		};	
 
 		var cashBalance = game.cash[game.team];
 		/* Enable building buttons if base is selected,building has been loaded in requirements, not in deploy building mode and player has enough money*/
 		if (baseSelected && !game.deployBuilding){			
 			if(game.currentLevel.requirements.buildings.indexOf('starport')>-1 && cashBalance>=buildings.list["starport"].cost){
-				document.querySelector("#starportbutton").disabled = false;
+				$("#starportbutton").removeAttr("disabled");
 			}
 			if(game.currentLevel.requirements.buildings.indexOf('ground-turret')>-1 && cashBalance>=buildings.list["ground-turret"].cost){
-				document.querySelector("#turretbutton").disabled = false;
+				$("#turretbutton").removeAttr("disabled");
 			}			
 		}
 
@@ -37,25 +37,25 @@ var sidebar = {
 		
 		if (starportSelected){
 			if(game.currentLevel.requirements.vehicles.indexOf('scout-tank')>-1 && cashBalance>=vehicles.list["scout-tank"].cost){
-				document.querySelector("#scouttankbutton").disabled = false;
+				$("#scouttankbutton").removeAttr("disabled");
 			}
 			if(game.currentLevel.requirements.vehicles.indexOf('heavy-tank')>-1 && cashBalance>=vehicles.list["heavy-tank"].cost){
-				document.querySelector("#heavytankbutton").disabled = false;
+				$("#heavytankbutton").removeAttr("disabled");
 			}
 			if(game.currentLevel.requirements.vehicles.indexOf('harvester')>-1 && cashBalance>=vehicles.list["harvester"].cost){
-				document.querySelector("#harvesterbutton").disabled = false;
+				$("#harvesterbutton").removeAttr("disabled");
 			}
 			if(game.currentLevel.requirements.aircraft.indexOf('chopper')>-1 && cashBalance>=aircraft.list["chopper"].cost){
-				document.querySelector("#chopperbutton").disabled = false;
+				$("#chopperbutton").removeAttr("disabled");
 			}
 			if(game.currentLevel.requirements.aircraft.indexOf('wraith')>-1 && cashBalance>=aircraft.list["wraith"].cost){
-				document.querySelector("#wraithbutton").disabled = false;
+				$("#wraithbutton").removeAttr("disabled");
 			}	
 		}
 	},
 	animate:function(){		
 		// Display the current cash balance value		
-		document.querySelector('#cash').innerHTML  = game.cash[game.team];
+		$('#cash').html(game.cash[game.team]);
 
 		//  Enable or disable buttons as appropriate
 		this.enableSidebarButtons();		
@@ -65,7 +65,7 @@ var sidebar = {
 			game.rebuildBuildableGrid();	
 			// Compare with buildable grid to see where we need to place the building
 			var placementGrid = buildings.list[game.deployBuilding].buildableGrid;
-			game.placementGrid = Object.assign([],placementGrid);
+			game.placementGrid = $.extend(true,[],placementGrid);
 			game.canDeployBuilding = true;
 			for (var i = game.placementGrid.length - 1; i >= 0; i--){
 				for (var j = game.placementGrid[i].length - 1; j >= 0; j--){					
@@ -75,35 +75,35 @@ var sidebar = {
 						game.canDeployBuilding = false;
 						game.placementGrid[i][j] = 0;
 					}
-				}
-			}
+				};
+			};
 		}		
 	},
 	init:function(){
 		// Initialize unit construction buttons 
-		document.querySelector("#scouttankbutton").onclick = function(){
+		$("#scouttankbutton").click(function(){
 			sidebar.constructAtStarport({type:"vehicles","name":"scout-tank"});
-		};
-		document.querySelector("#heavytankbutton").onclick = function(){
+		});
+		$("#heavytankbutton").click(function(){
 			sidebar.constructAtStarport({type:"vehicles","name":"heavy-tank"});
-		};
-		document.querySelector("#harvesterbutton").onclick = function(){
+		});
+		$("#harvesterbutton").click(function(){
 			sidebar.constructAtStarport({type:"vehicles","name":"harvester"});
-		};
-		document.querySelector("#chopperbutton").onclick = function(){
+		});
+		$("#chopperbutton").click(function(){
 			sidebar.constructAtStarport({type:"aircraft","name":"chopper"});
-		};
-		document.querySelector("#wraithbutton").onclick = function(){
+		});
+		$("#wraithbutton").click(function(){
 			sidebar.constructAtStarport({type:"aircraft","name":"wraith"});
-		};
+		});
 		
 		//Initialize building construction buttons
-		document.querySelector("#starportbutton").onclick = function(){
+		$("#starportbutton").click(function(){
 			game.deployBuilding = "starport";
-		};
-		document.querySelector("#turretbutton").onclick = function(){
+		});
+		$("#turretbutton").click(function(){
 			game.deployBuilding = "ground-turret";
-		};
+		});
 	},
 	constructAtStarport:function(unitDetails){
 		var starport;

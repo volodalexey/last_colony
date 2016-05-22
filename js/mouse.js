@@ -168,10 +168,11 @@ var mouse = {
 		mouse.gridY = Math.floor((mouse.gameY) / game.gridSize);	
 	},
     init:function(){
-        var mouseCanvas = document.querySelector("#gameforegroundcanvas");
-        mouseCanvas.onmousemove = function(ev) {
-            mouse.x = ev.pageX - mouseCanvas.offsetLeft;
-            mouse.y = ev.pageY - mouseCanvas.offsetTop;
+        var $mouseCanvas = $("#gameforegroundcanvas");
+        $mouseCanvas.mousemove(function(ev) {
+            var offset = $mouseCanvas.offset();
+            mouse.x = ev.pageX - offset.left;
+            mouse.y = ev.pageY - offset.top;  
             
             mouse.calculateGameCoordinates();
 
@@ -182,15 +183,15 @@ var mouse = {
             } else {
                 mouse.dragSelect = false;
             }                     
-        };
+        });
         
-        mouseCanvas.onclick = function(ev) {
+        $mouseCanvas.click(function(ev) {
             mouse.click(ev,false);
             mouse.dragSelect = false;                
             return false;
-        };
+        });
         
-        mouseCanvas.onmousedown = function(ev) {
+        $mouseCanvas.mousedown(function(ev) {
             if(ev.which == 1){
                 mouse.buttonPressed = true;
                 mouse.dragX = mouse.gameX;
@@ -198,14 +199,14 @@ var mouse = {
                 ev.preventDefault();
             }
             return false;
-        };
+        });
         
-        mouseCanvas.oncontextmenu = function(ev){
+        $mouseCanvas.bind('contextmenu',function(ev){
             mouse.click(ev,true);
             return false;
-        };
+        });
         
-		mouseCanvas.onmouseup = function(ev) {
+		$mouseCanvas.mouseup(function(ev) {
 		    var shiftPressed = ev.shiftKey;
 		    if(ev.which==1){
 		    //Left key was released
@@ -228,22 +229,22 @@ var mouse = {
 		                    }
 
 		                } 
-		            }
+		            };
 		        }
 		        mouse.buttonPressed = false;
 		        mouse.dragSelect = false;
 		    }
 		    return false;
-		};
+		});
 
         
-        mouseCanvas.onmouseleave = function(ev) {
+        $mouseCanvas.mouseleave(function(ev) {
             mouse.insideCanvas = false;
-        };
+        });
         
-        mouseCanvas.onmouseenter = function(ev) {
+        $mouseCanvas.mouseenter(function(ev) {
             mouse.buttonPressed = false;
             mouse.insideCanvas = true;
-        };
+        });
     }
 }

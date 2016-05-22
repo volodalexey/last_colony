@@ -14,8 +14,8 @@ var multiplayer = {
 		// Display multiplayer lobby screen after connecting
 		this.websocket.onopen = function(){			
 			// Hide the starting menu layer
-			document.querySelector('.gamelayer').style.display = 'none';
-			document.querySelector('#multiplayerlobbyscreen').style.display = 'block';
+			$('.gamelayer').hide();
+			$('#multiplayerlobbyscreen').show();	
 		}
 	
 		this.websocket.onclose = function(){			
@@ -64,18 +64,12 @@ var multiplayer = {
         'empty':'Open'
     },
     updateRoomStatus:function(status){
-        var list = document.querySelector("#multiplayergameslist");
-        list.options = []; // remove old options
+        var $list = $("#multiplayergameslist");
+        $list.empty(); // remove old options
         for (var i=0; i < status.length; i++) {
-					var key = "Game "+(i+1)+". "+this.statusMessages[status[i]];
-					var option = document.createElement('option');
-					option.disabled = status[i]== "running"||status[i]== "starting";
-					option.value = i+1;
-					option.textContent = key;
-					option.classList.add(status[i]);
-					option.selected = (i+1)== multiplayer.roomId;
-					list.appendChild(option);
-        }
+            var key = "Game "+(i+1)+". "+this.statusMessages[status[i]];            
+            $list.append($("<option></option>").attr("disabled",status[i]== "running"||status[i]== "starting").attr("value", (i+1)).text(key).addClass(status[i]).attr("selected", (i+1)== multiplayer.roomId));
+        };    
     },
 	join:function(){
 	    var selectedRoom = document.getElementById('multiplayergameslist').value;
@@ -111,15 +105,15 @@ var multiplayer = {
 		document.getElementById('multiplayergameslist').disabled = false;
 		document.getElementById('multiplayerjoin').disabled = false;		
 		// Show the starting menu layer
-		document.querySelector('.gamelayer').style.display = 'none';
-		document.querySelector('#gamestartscreen').style.display = 'block';
+		$('.gamelayer').hide();
+	    $('#gamestartscreen').show();			
 	},
 	sendWebSocketMessage:function(messageObject){
 	    this.websocket.send(JSON.stringify(messageObject));
 	},
 	currentLevel:0,
 	initMultiplayerLevel:function(messageObject){
-		document.querySelector('.gamelayer').style.display = 'none';
+	    $('.gamelayer').hide();        
 	    var spawnLocations = messageObject.spawnLocations;
 
 	    // Initialize multiplayer related variables
@@ -163,7 +157,7 @@ var multiplayer = {
 	    for (team in spawnLocations){
 	        var spawnIndex = spawnLocations[team];
 	        for (var i=0; i < level.teamStartingItems.length; i++) {
-	            var itemDetails = Object.assign({},level.teamStartingItems[i]);
+	            var itemDetails = $.extend(true,{},level.teamStartingItems[i]);
 	            itemDetails.x += level.spawnLocations[spawnIndex].x+itemDetails.x;
 	            itemDetails.y += level.spawnLocations[spawnIndex].y+itemDetails.y;
 	            itemDetails.team = team;
@@ -192,7 +186,7 @@ var multiplayer = {
 	    game.currentMapPassableGrid = undefined;
 
 	    // Load Starting Cash For Game
-	    game.cash = Object.assign([],level.cash);
+	    game.cash = $.extend([],level.cash);
 
 	    // Enable the enter mission button once all assets are loaded
 	    if (loader.loaded){
@@ -242,14 +236,14 @@ var multiplayer = {
 	    multiplayer.sendWebSocketMessage({type:"lose_game"});
 	},
 	endGame:function(reason){
-	    game.running = false;
+	    game.running = false
 	    clearInterval(multiplayer.animationInterval);
 	    // Show reason for game ending, and on OK, exit multiplayer screen
 	    game.showMessageBox(reason,multiplayer.closeAndExit);
 	}
 };
 
-window.onkeydown = function(e){
+$(window).keydown(function(e){
     // Chatting only allowed in multiplayer when game is running
     if(game.type != "multiplayer" || !game.running){
         return;
@@ -257,24 +251,25 @@ window.onkeydown = function(e){
     
     var keyPressed = e.which;
     if (e.which == 13){ // Enter key pressed    
-        var isVisible = document.querySelector('#chatmessage').style.display !== 'none';
+        var isVisible = $('#chatmessage').is(':visible');    
         if (isVisible){
             // if chat box is visible, pressing enter sends the message and hides the chat box
-            if (document.querySelector('#chatmessage').value != ''){
-                multiplayer.sendWebSocketMessage({type:"chat",message: document.querySelector('#chatmessage').value});
-							document.querySelector('#chatmessage').value = '';
+            if ($('#chatmessage').val()!= ''){
+                multiplayer.sendWebSocketMessage({type:"chat",message:$('#chatmessage').val()});
+                $('#chatmessage').val('');
             }
-					document.querySelector('#chatmessage').style.display = 'none';
+            $('#chatmessage').hide();
         } else {
             // if chat box is not visible, pressing enter shows the chat box
-					document.querySelector('#chatmessage').style.display = 'block';
-					document.querySelector('#chatmessage').focus();
+            $('#chatmessage').show();
+            $('#chatmessage').focus();    
         }
         e.preventDefault();
     } else if (e.which==27){ // Escape key pressed
         // Pressing escape hides the chat box
-			document.querySelector('#chatmessage').style.display = 'none';
-			document.querySelector('#chatmessage').value = '';
+        $('#chatmessage').hide();
+        $('#chatmessage').val('');        
         e.preventDefault();
     }
-};
+});
+

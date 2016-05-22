@@ -9,7 +9,7 @@
     }
  
     if (!window.requestAnimationFrame)
-        window.requestAnimationFrame = function(callback) {
+        window.requestAnimationFrame = function(callback, element) {
             var currTime = new Date().getTime();
             var timeToCall = Math.max(0, 16 - (currTime - lastTime));
             var id = window.setTimeout(function() { callback(currTime + timeToCall); }, 
@@ -28,10 +28,28 @@ var loader = {
     loaded:true,
     loadedCount:0, // Assets that have been loaded so far
     totalCount:0, // Total number of assets that need to be loaded
+    
+    init:function(){
+        // check for sound support
+        var mp3Support,oggSupport;
+        var audio = document.createElement('audio');
+    	if (audio.canPlayType) {
+       		// Currently canPlayType() returns: "", "maybe" or "probably" 
+      		mp3Support = "" != audio.canPlayType('audio/mpeg');
+      		oggSupport = "" != audio.canPlayType('audio/ogg; codecs="vorbis"');
+    	} else {
+    		//The audio tag is not supported
+    		mp3Support = false;
+    		oggSupport = false;	
+    	}
+
+        // Check for ogg, then mp3, and finally set soundFileExtn to undefined
+        loader.soundFileExtn = oggSupport?".ogg":mp3Support?".mp3":undefined;        
+    },
     loadImage:function(url){
         this.totalCount++;
         this.loaded = false;
-        document.querySelector('#loadingscreen').style.display = 'block';
+        $('#loadingscreen').show();
         var image = new Image();
         image.src = url;
         image.onload = loader.itemLoaded;
@@ -41,7 +59,7 @@ var loader = {
 	loadSound:function(url){
 		this.totalCount++;
 		this.loaded = false;
-      document.querySelector('#loadingscreen').style.display = 'block';
+		$('#loadingscreen').show();
 		var audio = new Audio();
 		audio.src = url+loader.soundFileExtn;
 		audio.addEventListener("canplaythrough", loader.itemLoaded, false);
@@ -49,17 +67,17 @@ var loader = {
 	},
     itemLoaded:function(){
         loader.loadedCount++;
-        document.querySelector('#loadingmessage').innerHTML = 'Loaded '+loader.loadedCount+' of '+loader.totalCount;
+        $('#loadingmessage').html('Loaded '+loader.loadedCount+' of '+loader.totalCount);
         if (loader.loadedCount === loader.totalCount){
             loader.loaded = true;
-            document.querySelector('#loadingscreen').style.display = 'none';
+            $('#loadingscreen').hide();
             if(loader.onload){
                 loader.onload();
                 loader.onload = undefined;
             }
         }
     }
-};
+}
 
 /* The default load() method used by all our game entities*/
 function loadItem(name){
@@ -106,10 +124,10 @@ function loadItem(name){
 function addItem(details){
     var item = {};
     var name = details.name;
-    Object.assign(item,this.defaults);
-    Object.assign(item,this.list[name]);
+    $.extend(item,this.defaults);
+    $.extend(item,this.list[name]);
     item.life = item.hitPoints;
-    Object.assign(item,details);
+    $.extend(item,details);
     return item;
 }
 

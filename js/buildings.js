@@ -108,7 +108,7 @@ var buildings = {
 							itemDetails.action="teleport";
 							itemDetails.team = this.team;
 							game.cash[this.team] -= cost;
-							this.constructUnit = Object.assign([],itemDetails);
+							this.constructUnit = $.extend(true,[],itemDetails);
 
 						}	
 						this.orders = {type:"stand"};																
