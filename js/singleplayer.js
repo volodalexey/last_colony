@@ -43,13 +43,13 @@ var singleplayer = {
 	               } else {
 	                   console.log('Could not load type :',type);
 	               }
-	           };
-	    };
+	           }
+	    }
 
 	    for (var i = level.items.length - 1; i >= 0; i--){
 	        var itemDetails = level.items[i];
 	        game.add(itemDetails);
-	    };        
+	    }
 
 	    // Create a grid that stores all obstructed tiles as 1 and unobstructed as 0
 	    game.currentMapTerrainGrid = [];
@@ -58,11 +58,11 @@ var singleplayer = {
 	        for (var x=0; x< level.mapGridWidth; x++) {
 	           game.currentMapTerrainGrid[y][x] = 0;
 	        }
-	    };
+	    }
 	    for (var i = level.mapObstructedTerrain.length - 1; i >= 0; i--){            
 	        var obstruction = level.mapObstructedTerrain[i];
 	        game.currentMapTerrainGrid[obstruction[1]][obstruction[0]] = 1;
-	    };
+	    }
 	    game.currentMapPassableGrid = undefined;	
 
 		// Load Starting Cash For Game
