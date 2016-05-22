@@ -20,7 +20,7 @@ var sidebar = {
 					starportSelected = true;
 				}	
 			}
-		};	
+		}
 
 		var cashBalance = game.cash[game.team];
 		/* Enable building buttons if base is selected,building has been loaded in requirements, not in deploy building mode and player has enough money*/
@@ -75,8 +75,8 @@ var sidebar = {
 						game.canDeployBuilding = false;
 						game.placementGrid[i][j] = 0;
 					}
-				};
-			};
+				}
+			}
 		}		
 	},
 	init:function(){

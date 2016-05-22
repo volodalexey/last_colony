@@ -94,13 +94,11 @@ var game = {
         game.items[i].processOrders();
       }
     }
-    ;
 
     // Animate each of the elements within the game
     for (var i = game.items.length - 1; i >= 0; i--) {
       game.items[i].animate();
     }
-    ;
 
     // Sort game items into a sortedItems array based on their x,y coordinates
     game.sortedItems = Object.assign([], game.items);
@@ -145,13 +143,11 @@ var game = {
         game.sortedItems[i].draw();
       }
     }
-    ;
 
     // Draw the bullets on top of all the other elements
     for (var i = game.bullets.length - 1; i >= 0; i--) {
       game.bullets[i].draw();
     }
-    ;
 
     fog.draw();
 
