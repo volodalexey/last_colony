@@ -2,7 +2,7 @@ var singleplayer = {
     // Begin single player campaign
     start:function(){
         // Hide the starting menu layer
-        $('.gamelayer').hide();
+			document.querySelector('.gamelayer').style.display = 'none';
         
         // Begin with the first level
         singleplayer.currentLevel = 0;
@@ -14,8 +14,8 @@ var singleplayer = {
     },    
     exit:function(){
         // Show the starting menu layer
-        $('.gamelayer').hide();
-        $('#gamestartscreen').show();
+			document.querySelector('.gamelayer').style.display = 'none';
+			document.querySelector('#gamestartscreen').style.display = 'block';
     },
     currentLevel:0,    
 	startCurrentLevel:function(){                
@@ -23,7 +23,7 @@ var singleplayer = {
 	    var level = maps.singleplayer[singleplayer.currentLevel];
 
 	    // Don't allow player to enter mission until all assets for the level are loaded
-	    $("#entermission").attr("disabled", true);
+		document.querySelector("#entermission").disabled = false;
 
 	    // Load all the assets for the level
 	    game.currentMapImage = loader.loadImage(level.mapImage);
@@ -66,20 +66,20 @@ var singleplayer = {
 	    game.currentMapPassableGrid = undefined;	
 
 		// Load Starting Cash For Game
-		game.cash = $.extend([],level.cash);
+		game.cash = Object.assign([],level.cash);
 	
 	    // Enable the enter mission button once all assets are loaded
 	    if (loader.loaded){
-	        $("#entermission").removeAttr("disabled");
+				document.querySelector("#entermission").disabled = false;
 	    } else {
 	        loader.onload = function(){
-	            $("#entermission").removeAttr("disabled");
+						document.querySelector("#entermission").disabled = false;
 	        }
 	    }
 
 	    // Load the mission screen with the current briefing
-	    $('#missonbriefing').html(level.briefing.replace(/\n/g,'<br><br>'));   
-	    $("#missionscreen").show();       
+		document.querySelector('#missonbriefing').innerHTML = level.briefing.replace(/\n/g,'<br><br>');
+		document.querySelector("#missionscreen").style.display = 'block';       
 	},    
     play:function(){
 		fog.initLevel();
@@ -98,23 +98,23 @@ var singleplayer = {
 	        var moreLevels = (singleplayer.currentLevel < maps.singleplayer.length-1);
 	        if (moreLevels){
 	            game.showMessageBox("Mission Accomplished.",function(){
-	                $('.gamelayer').hide();
+								document.querySelector('.gamelayer').style.display = 'none';
 	                singleplayer.currentLevel++;
 	                singleplayer.startCurrentLevel();
 	            });
 	        } else {
 	            game.showMessageBox("Mission Accomplished.<br><br>This was the last mission in the campaign.<br><br>Thank You for playing.",function(){
-	                $('.gamelayer').hide();
-	                $('#gamestartscreen').show();
+								document.querySelector('.gamelayer').style.display = 'none';
+								document.querySelector('#gamestartscreen').style.display = 'block';
 	            });
 	        }
 	    } else {
 	        game.showMessageBox("Mission Failed.<br><br>Try again?",function(){
-	            $('.gamelayer').hide();
+						document.querySelector('.gamelayer').style.display = 'none';
 	            singleplayer.startCurrentLevel();
 	        }, function(){
-	            $('.gamelayer').hide();
-	            $('#gamestartscreen').show();
+						document.querySelector('.gamelayer').style.display = 'none';
+						document.querySelector('#gamestartscreen').show();
 	        });
 	    }
 	}

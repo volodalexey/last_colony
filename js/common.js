@@ -49,7 +49,7 @@ var loader = {
     loadImage:function(url){
         this.totalCount++;
         this.loaded = false;
-        $('#loadingscreen').show();
+        document.querySelector('#loadingscreen').style.display = 'block';
         var image = new Image();
         image.src = url;
         image.onload = loader.itemLoaded;
@@ -59,7 +59,7 @@ var loader = {
 	loadSound:function(url){
 		this.totalCount++;
 		this.loaded = false;
-		$('#loadingscreen').show();
+      document.querySelector('#loadingscreen').style.display = 'block';
 		var audio = new Audio();
 		audio.src = url+loader.soundFileExtn;
 		audio.addEventListener("canplaythrough", loader.itemLoaded, false);
@@ -67,10 +67,10 @@ var loader = {
 	},
     itemLoaded:function(){
         loader.loadedCount++;
-        $('#loadingmessage').html('Loaded '+loader.loadedCount+' of '+loader.totalCount);
+        document.querySelector('#loadingmessage').innerHTML = 'Loaded '+loader.loadedCount+' of '+loader.totalCount;
         if (loader.loadedCount === loader.totalCount){
             loader.loaded = true;
-            $('#loadingscreen').hide();
+            document.querySelector('#loadingscreen').style.display = 'none';
             if(loader.onload){
                 loader.onload();
                 loader.onload = undefined;
@@ -124,10 +124,10 @@ function loadItem(name){
 function addItem(details){
     var item = {};
     var name = details.name;
-    $.extend(item,this.defaults);
-    $.extend(item,this.list[name]);
+    Object.assign(item,this.defaults);
+    Object.assign(item,this.list[name]);
     item.life = item.hitPoints;
-    $.extend(item,details);
+    Object.assign(item,details);
     return item;
 }
 

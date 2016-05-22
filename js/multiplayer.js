@@ -257,7 +257,7 @@ window.onkeydown = function(e){
     
     var keyPressed = e.which;
     if (e.which == 13){ // Enter key pressed    
-        var isVisible = document.querySelector('#chatmessage').is(':visible');
+        var isVisible = document.querySelector('#chatmessage').style.display !== 'none';
         if (isVisible){
             // if chat box is visible, pressing enter sends the message and hides the chat box
             if (document.querySelector('#chatmessage').value != ''){
