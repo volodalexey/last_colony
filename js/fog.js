@@ -32,7 +32,9 @@ var fog = {
     this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
     // Initialize the players fog grid
-    this.grid[game.team] = Array.from(this.defaultFogGrid);
+    this.grid[game.team] = this.defaultFogGrid.map((arr) => {
+        return arr.slice();
+    });
 
     // Clear all areas of the fog where a player item has vision
     fog.context.globalCompositeOperation = "destination-out";
