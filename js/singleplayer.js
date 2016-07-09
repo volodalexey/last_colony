@@ -66,7 +66,7 @@ var singleplayer = {
     game.currentMapPassableGrid = undefined;
 
     // Load Starting Cash For Game
-    game.cash = Object.assign([], level.cash);
+    game.cash = Object.assign({}, level.cash);
 
     // Enable the enter mission button once all assets are loaded
     if (loader.loaded) {
@@ -78,7 +78,7 @@ var singleplayer = {
     }
 
     // Load the mission screen with the current briefing
-    document.querySelector('#missonbriefing').innerHTML = level.briefing.replace(/\n/g, '<br><br>');
+    document.querySelector('#missonbriefing').innerHTML = '<h2>' + level.name + '</h2>' + level.briefing.replace(/\n/g, '<br /><br />');
     document.querySelector("#missionscreen").style.display = 'block';
   },
   play: function() {
