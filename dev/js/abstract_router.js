@@ -1,208 +1,9 @@
-var NO_RENDER = 'NO_RENDER';
-
-function isNullOrUndefined(obj) {
-  return isUndefined(obj) || isNull(obj);
-}
+var createVNode = require('inferno').createVNode,
+  CreateClass = require('inferno-create-class');
 
 function isNull(obj) {
   return obj === null;
 }
-
-function isUndefined(obj) {
-  return obj === undefined;
-}
-
-function VPlaceholder() {
-  this.placeholder = true;
-  this.dom = null;
-}
-
-function createVPlaceholder() {
-  return new VPlaceholder();
-}
-
-function constructDefaults(string, object, value) {
-  /* eslint no-return-assign: 0 */
-  string.split(',').forEach(function (i) { return object[i] = value; });
-}
-
-var xlinkNS = 'http://www.w3.org/1999/xlink';
-var xmlNS = 'http://www.w3.org/XML/1998/namespace';
-var strictProps = {};
-var booleanProps = {};
-var namespaces = {};
-var isUnitlessNumber = {};
-
-constructDefaults('xlink:href,xlink:arcrole,xlink:actuate,xlink:role,xlink:titlef,xlink:type', namespaces, xlinkNS);
-constructDefaults('xml:base,xml:lang,xml:space', namespaces, xmlNS);
-constructDefaults('volume,value', strictProps, true);
-constructDefaults('muted,scoped,loop,open,checked,default,capture,disabled,selected,readonly,multiple,required,autoplay,controls,seamless,reversed,allowfullscreen,novalidate', booleanProps, true);
-constructDefaults('animationIterationCount,borderImageOutset,borderImageSlice,borderImageWidth,boxFlex,boxFlexGroup,boxOrdinalGroup,columnCount,flex,flexGrow,flexPositive,flexShrink,flexNegative,flexOrder,gridRow,gridColumn,fontWeight,lineClamp,lineHeight,opacity,order,orphans,tabSize,widows,zIndex,zoom,fillOpacity,floodOpacity,stopOpacity,strokeDasharray,strokeDashoffset,strokeMiterlimit,strokeOpacity,strokeWidth,', isUnitlessNumber, true);
-
-var noOp = 'Inferno Error: Can only update a mounted or mounting component. This usually means you called setState() or forceUpdate() on an unmounted component. This is a no-op.';
-
-// Copy of the util from dom/util, otherwise it makes massive bundles
-function getActiveNode() {
-  return document.activeElement;
-}
-
-// Copy of the util from dom/util, otherwise it makes massive bundles
-function resetActiveNode(activeNode) {
-  if (activeNode !== document.body && document.activeElement !== activeNode) {
-    activeNode.focus(); // TODO: verify are we doing new focus event, if user has focus listener this might trigger it
-  }
-}
-
-function queueStateChanges(component, newState, callback) {
-  for (var stateKey in newState) {
-    component._pendingState[stateKey] = newState[stateKey];
-  }
-  if (!component._pendingSetState) {
-    component._pendingSetState = true;
-    applyState(component, false, callback);
-  } else {
-    component.state = Object.assign({}, component.state, component._pendingState);
-    component._pendingState = {};
-  }
-}
-
-function applyState(component, force, callback) {
-  if ((!component._deferSetState || force) && !component._blockRender) {
-    component._pendingSetState = false;
-    var pendingState = component._pendingState;
-    var oldState = component.state;
-    var nextState = Object.assign({}, oldState, pendingState);
-
-    component._pendingState = {};
-    var nextNode = component._updateComponent(oldState, nextState, component.props, component.props, force);
-
-    if (nextNode === NO_RENDER) {
-      nextNode = component._lastNode;
-    } else if (isNullOrUndefined(nextNode)) {
-      nextNode = createVPlaceholder();
-    }
-    var lastNode = component._lastNode;
-    var parentDom = lastNode.dom.parentNode;
-    var activeNode = getActiveNode();
-    var subLifecycle = new Lifecycle();
-
-    component._patch(lastNode, nextNode, parentDom, subLifecycle, component.context, component, null);
-    component._lastNode = nextNode;
-    component._componentToDOMNodeMap.set(component, nextNode.dom);
-    component._parentNode.dom = nextNode.dom;
-
-    subLifecycle.trigger();
-    if (!isNullOrUndefined(callback)) {
-      callback();
-    }
-    resetActiveNode(activeNode);
-  }
-}
-
-var Component = function Component(props) {
-  /** @type {object} */
-  this.props = props || {};
-
-  /** @type {object} */
-  this.state = {};
-
-  /** @type {object} */
-  this.refs = {};
-  this._blockRender = false;
-  this._blockSetState = false;
-  this._deferSetState = false;
-  this._pendingSetState = false;
-  this._pendingState = {};
-  this._parentNode = null;
-  this._lastNode = null;
-  this._unmounted = true;
-  this.context = {};
-  this._patch = null;
-  this._parentComponent = null;
-  this._componentToDOMNodeMap = null;
-};
-
-Component.prototype.render = function render () {
-};
-
-Component.prototype.forceUpdate = function forceUpdate (callback) {
-  if (this._unmounted) {
-    throw Error(noOp);
-  }
-  applyState(this, true, callback);
-};
-
-Component.prototype.setState = function setState (newState, callback) {
-  if (this._unmounted) {
-    throw Error(noOp);
-  }
-  if (this._blockSetState === false) {
-    queueStateChanges(this, newState, callback);
-  } else {
-    throw Error('Inferno Warning: Cannot update state via setState() in componentWillUpdate()');
-  }
-};
-
-Component.prototype.componentDidMount = function componentDidMount () {
-};
-
-Component.prototype.componentWillMount = function componentWillMount () {
-};
-
-Component.prototype.componentWillUnmount = function componentWillUnmount () {
-};
-
-Component.prototype.componentDidUpdate = function componentDidUpdate () {
-};
-
-Component.prototype.shouldComponentUpdate = function shouldComponentUpdate () {
-  return true;
-};
-
-Component.prototype.componentWillReceiveProps = function componentWillReceiveProps () {
-};
-
-Component.prototype.componentWillUpdate = function componentWillUpdate () {
-};
-
-Component.prototype.getChildContext = function getChildContext () {
-};
-
-Component.prototype._updateComponent = function _updateComponent (prevState, nextState, prevProps, nextProps, force) {
-  if (this._unmounted === true) {
-    this._unmounted = false;
-    return false;
-  }
-  if (!isNullOrUndefined(nextProps) && isNullOrUndefined(nextProps.children)) {
-    nextProps.children = prevProps.children;
-  }
-  if (prevProps !== nextProps || prevState !== nextState || force) {
-    if (prevProps !== nextProps) {
-      this._blockRender = true;
-      this.componentWillReceiveProps(nextProps);
-      this._blockRender = false;
-      if (this._pendingSetState) {
-        nextState = Object.assign({}, nextState, this._pendingState);
-        this._pendingSetState = false;
-        this._pendingState = {};
-      }
-    }
-    var shouldUpdate = this.shouldComponentUpdate(nextProps, nextState);
-
-    if (shouldUpdate !== false || force) {
-      this._blockSetState = true;
-      this.componentWillUpdate(nextProps, nextState);
-      this._blockSetState = false;
-      this.props = nextProps;
-      this.state = nextState;
-      var node = this.render();
-
-      this.componentDidUpdate(prevProps, prevState);
-      return node;
-    }
-  }
-  return NO_RENDER;
-};
 
 var ASYNC_STATUS = {
   pending: 'pending',
@@ -210,28 +11,17 @@ var ASYNC_STATUS = {
   rejected: 'rejected'
 };
 
-var Route = (function (Component) {
-  function Route(props) {
-    Component.call(this, props);
-    this.state = {
-      async: null
-    };
-  }
-
-  if ( Component ) Route.__proto__ = Component;
-  Route.prototype = Object.create( Component && Component.prototype );
-  Route.prototype.constructor = Route;
-
-  Route.prototype.async = function async () {
+var Route = CreateClass({
+  async: function() {
     var this$1 = this;
 
     var async = this.props.async;
 
     if (async) {
       this.setState({
-        async: { status: ASYNC_STATUS.pending }
+        async: {status: ASYNC_STATUS.pending}
       });
-      async(this.props.params).then(function (value) {
+      async(this.props.params).then(function(value) {
         this$1.setState({
           async: {
             status: ASYNC_STATUS.fulfilled,
@@ -240,35 +30,33 @@ var Route = (function (Component) {
         });
       }, this.reject).catch(this.reject);
     }
-  };
+  },
 
-  Route.prototype.reject = function reject (value) {
+  reject: function(value) {
     this.setState({
       async: {
         status: ASYNC_STATUS.rejected,
         value: value
       }
     });
-  };
+  },
 
-  Route.prototype.componentWillReceiveProps = function componentWillReceiveProps () {
+  componentWillReceiveProps: function() {
     this.async();
-  };
+  },
 
-  Route.prototype.componentWillMount = function componentWillMount () {
+  componentWillMount: function() {
     this.async();
-  };
+  },
 
-  Route.prototype.render = function render () {
+  render: function() {
     var ref = this.props;
     var component = ref.component;
     var params = ref.params;
 
-    return createVNode().setTag(component).setAttrs({ params: params, async: this.state.async });
-  };
-
-  return Route;
-}(Component));
+    return createVNode().setTag(component).setAttrs({params: params, async: this.state.async});
+  }
+});
 
 var EMPTY$1 = {};
 
@@ -293,7 +81,7 @@ function convertToHashbang(url) {
 
 // Thanks goes to Preact for this function: https://github.com/developit/preact-router/blob/master/src/util.js#L4
 function exec(url, route, opts) {
-  if ( opts === void 0 ) opts = EMPTY$1;
+  if (opts === void 0) opts = EMPTY$1;
 
   var reg = /(?:\?([^#]*))?(#.*)?$/,
     c = url.match(reg),
@@ -354,54 +142,33 @@ function rank(url) {
   return (strip(url).match(/\/+/g) || '').length;
 }
 
-var Router = (function (Component) {
-  function Router(props) {
-    Component.call(this, props);
-    if (!props.history) {
-      throw new Error('Inferno Error: "inferno-router" Router components require a "history" prop passed.');
-    }
-    this._didRoute = false;
-    this.state = {
-      url: props.url || props.history.getCurrentUrl()
-    };
-  }
-
-  if ( Component ) Router.__proto__ = Component;
-  Router.prototype = Object.create( Component && Component.prototype );
-  Router.prototype.constructor = Router;
-
-  Router.prototype.getChildContext = function getChildContext () {
+var Router = CreateClass({
+  getChildContext: function() {
     return {
       history: this.props.history,
       hashbang: this.props.hashbang
     };
-  };
-
-  Router.prototype.componentWillMount = function componentWillMount () {
+  },
+  componentWillMount: function() {
     this.props.history.addRouter(this);
-  };
-
-  Router.prototype.componentWillUnmount = function componentWillUnmount () {
+  },
+  componentWillUnmount: function() {
     this.props.history.removeRouter(this);
-  };
-
-  Router.prototype.routeTo = function routeTo (url) {
+  },
+  routeTo: function(url) {
     this._didRoute = false;
-    this.setState({ url: url });
+    this.setState({url: url});
     return this._didRoute;
-  };
-
-  Router.prototype.render = function render () {
+  },
+  render: function() {
     var children = toArray(this.props.children);
     var url = this.props.url || this.state.url;
     var wrapperComponent = this.props.component;
     var hashbang = this.props.hashbang;
 
     return handleRoutes(children, url, hashbang, wrapperComponent, '');
-  };
-
-  return Router;
-}(Component));
+  }
+});
 
 function toArray(children) {
   return Array.isArray(children) ? children : (children ? [children] : children);
@@ -431,7 +198,7 @@ function handleRoutes(routes, url, hashbang, wrapperComponent, lastPath) {
           params: params
         });
       }
-      return route.setAttrs(Object.assign({}, { params: params }, route.attrs));
+      return route.setAttrs(Object.assign({}, {params: params}, route.attrs));
     }
   }
   return !lastPath && wrapperComponent ? createVNode().setTag(wrapperComponent) : null;
@@ -472,9 +239,9 @@ function routeTo(url) {
   return didRoute;
 }
 
-if (isBrowser) {
-  window.addEventListener('popstate', function () { return routeTo(getCurrentUrl()); });
-}
+// if (isBrowser) {
+//   window.addEventListener('popstate', function () { return routeTo(getCurrentUrl()); });
+// }
 
 var browserHistory = {
   addRouter: function addRouter(router) {
