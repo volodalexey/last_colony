@@ -21,6 +21,23 @@ var loader = {
     audio.addEventListener("canplaythrough", loader.itemLoaded, false);
     return audio;
   },
+  loadAudio: function(url, callback) {
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', url, true);
+    xhr.responseType = 'arraybuffer';
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState === 4) {
+        if (xhr.status === 0) {
+          callback(new Error());
+        } else if (xhr.status >= 200 && xhr.status < 300) {
+          callback(null, xhr.response);
+        } else {
+          callback(xhr.responseText);
+        }
+      }
+    };
+    xhr.send();
+  },
   itemLoaded: function() {
     loader.loadedCount++;
     document.querySelector('#loadingmessage').innerHTML = 'Loaded ' + loader.loadedCount + ' of ' + loader.totalCount;

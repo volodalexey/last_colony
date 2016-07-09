@@ -7,7 +7,7 @@ var game = {
   init: function() {
     mouse.init();
     sidebar.init();
-    sounds.init();
+    sounds.init(0.5);
 
     document.querySelector('.gamelayer').style.display = 'none';
     document.querySelector('#gamestartscreen').style.display = 'block';
