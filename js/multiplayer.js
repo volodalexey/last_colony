@@ -1,10 +1,10 @@
 var multiplayer = {
   // Open multiplayer game lobby
   websocket_url: "ws://localhost:8181/",
-  websocket: undefined,
+  websocket: null,
   start: function() {
     game.type = "multiplayer";
-    var WebSocketObject = window.WebSocket || window.MozWebSocket;
+    var self = this, WebSocketObject = window.WebSocket || window.MozWebSocket;
     if (!WebSocketObject) {
       game.showMessageBox("Your browser does not support WebSocket. Multiplayer will not work.");
       return;
@@ -14,13 +14,13 @@ var multiplayer = {
     // Display multiplayer lobby screen after connecting
     this.websocket.onopen = function() {
       // Hide the starting menu layer
-      document.querySelector('.gamelayer').style.display = 'none';
+      self.hideGameLayer();
       document.querySelector('#multiplayerlobbyscreen').style.display = 'block';
-    }
+    };
 
     this.websocket.onclose = function() {
       multiplayer.endGame("Error connecting to server.");
-    }
+    };
 
     this.websocket.onerror = function() {
       multiplayer.endGame("Error connecting to server.");
@@ -100,17 +100,25 @@ var multiplayer = {
       multiplayer.closeAndExit();
     }
   },
+  hideGameLayer: function() {
+    Array.prototype.slice
+      .call(document.querySelectorAll('.gamelayer'))
+      .forEach(function(el) {
+        el.style.display = 'none';
+      });
+  },
   closeAndExit: function() {
     // clear handlers and close connection
     multiplayer.websocket.onopen = null;
     multiplayer.websocket.onclose = null;
     multiplayer.websocket.onerror = null;
     multiplayer.websocket.close();
+    multiplayer.websocket = null;
 
     document.getElementById('multiplayergameslist').disabled = false;
     document.getElementById('multiplayerjoin').disabled = false;
     // Show the starting menu layer
-    document.querySelector('.gamelayer').style.display = 'none';
+    this.hideGameLayer();
     document.querySelector('#gamestartscreen').style.display = 'block';
   },
   sendWebSocketMessage: function(messageObject) {
@@ -118,7 +126,7 @@ var multiplayer = {
   },
   currentLevel: 0,
   initMultiplayerLevel: function(messageObject) {
-    document.querySelector('.gamelayer').style.display = 'none';
+    this.hideGameLayer();
     var i, spawnLocations = messageObject.spawnLocations;
 
     // Initialize multiplayer related variables
@@ -259,27 +267,29 @@ window.onkeydown = function(e) {
   if (game.type != "multiplayer" || !game.running) {
     return;
   }
-
-  var keyPressed = e.which;
-  if (e.which == 13) { // Enter key pressed    
-    var isVisible = document.querySelector('#chatmessage').style.display !== 'none';
-    if (isVisible) {
-      // if chat box is visible, pressing enter sends the message and hides the chat box
-      if (document.querySelector('#chatmessage').value != '') {
-        multiplayer.sendWebSocketMessage({type: "chat", message: document.querySelector('#chatmessage').value});
-        document.querySelector('#chatmessage').value = '';
+  var keyCode = e.keyCode, chat_message = document.querySelector('#chatmessage');
+  switch (keyCode) {
+    case 13: // Enter key pressed
+      var isVisible = chat_message.style.display !== 'none';
+      if (isVisible) {
+        // if chat box is visible, pressing enter sends the message and hides the chat box
+        if (chat_message.value != '') {
+          multiplayer.sendWebSocketMessage({type: "chat", message: chat_message.value});
+          chat_message.value = '';
+        }
+        chat_message.style.display = 'none';
+      } else {
+        // if chat box is not visible, pressing enter shows the chat box
+        chat_message.style.display = 'block';
+        chat_message.focus();
       }
-      document.querySelector('#chatmessage').style.display = 'none';
-    } else {
-      // if chat box is not visible, pressing enter shows the chat box
-      document.querySelector('#chatmessage').style.display = 'block';
-      document.querySelector('#chatmessage').focus();
-    }
-    e.preventDefault();
-  } else if (e.which == 27) { // Escape key pressed
-    // Pressing escape hides the chat box
-    document.querySelector('#chatmessage').style.display = 'none';
-    document.querySelector('#chatmessage').value = '';
-    e.preventDefault();
+      e.preventDefault();
+      break;
+    case 27: // Escape key pressed
+      // Pressing escape hides the chat box
+      chat_message.style.display = 'none';
+      chat_message.value = '';
+      e.preventDefault();
+      break;
   }
 };
