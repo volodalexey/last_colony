@@ -344,7 +344,7 @@ var vehicles = {
 		    var start = [Math.floor(this.x),Math.floor(this.y)];
 		    var end = [Math.floor(destination.x),Math.floor(destination.y)];  
 
-		    var grid = Object.assign([],game.currentMapPassableGrid);
+		    var grid = game.currentMapPassableGrid.map(g => g.slice());
 		    // Allow destination to be "movable" so that algorithm can find a path
 		    if(destination.type == "buildings"||destination.type == "terrain"){
 		        grid[Math.floor(destination.y)][Math.floor(destination.x)] = 0;

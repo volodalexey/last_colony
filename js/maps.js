@@ -194,7 +194,8 @@ var maps = {
 			        }
 			    },
 				// Construct a couple of bad guys to hunt the player every time enemy has enough money
-				{"type":"timed","time":60000,"repeat":true,
+				// {"type":"timed","time":60000,"repeat":true,
+				{"type":"timed","time":1000,"repeat":true,
 				    "action":function(){
 						if(game.cash["green"]>1000){
 							game.sendCommand([-12,-13],{type:"construct-unit",details:{type:"vehicles",name:"scout-tank",orders:{"type":"hunt"}}});						

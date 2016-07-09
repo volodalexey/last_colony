@@ -87,7 +87,6 @@ var buildings = {
                 }
               }
             }
-            ;
 
             var cost = window[this.orders.details.type].list[this.orders.details.name].cost;
             if (unitOnTop) {
@@ -109,7 +108,7 @@ var buildings = {
               itemDetails.action = "teleport";
               itemDetails.team = this.team;
               game.cash[this.team] -= cost;
-              this.constructUnit = Object.assign([], itemDetails);
+              this.constructUnit = Object.assign({}, itemDetails);
 
             }
             this.orders = {type: "stand"};

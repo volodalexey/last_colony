@@ -101,8 +101,8 @@ var game = {
     }
 
     // Sort game items into a sortedItems array based on their x,y coordinates
-    game.sortedItems = Object.assign([], game.items);
-    game.sortedItems.sort(function(a, b) {
+    game.sortedItems = game.items.map(item => Object.assign({}, item));
+    game.sortedItems.sort((a, b) => {
       return b.y - a.y + ((b.y == a.y) ? (a.x - b.x) : 0);
     });
 
@@ -289,13 +289,12 @@ var game = {
       var item = game.getItemByUid(uid);
       //if uid is a valid item, set the order for the item
       if (item) {
-        item.orders = Object.assign([], details);
+        item.orders = Object.assign({}, details);
         if (toObject) {
           item.orders.to = toObject;
         }
       }
     }
-    ;
   },
   //Movement related properties
   speedAdjustmentFactor: 1 / 64,
