@@ -40,7 +40,7 @@ var babel_loader = {
   test: /\.js$/,
   include: [js_path]
 };
-if (true) {
+if (babel_loader) {
   if (!babel_loader.query) { babel_loader.query = {} }
   babel_loader.query.plugins = ['inferno'];
 }
@@ -56,7 +56,7 @@ module.exports =  {
   },
   module: {
     loaders: [
-      // babel_loader,
+      babel_loader,
       {
         test: /\.json$/,
         include: [json_path, package_path],
