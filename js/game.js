@@ -203,7 +203,6 @@ var game = {
         break;
       }
     }
-    ;
 
     // Remove item from the items array
     for (var i = game.items.length - 1; i >= 0; i--) {
@@ -212,7 +211,6 @@ var game = {
         break;
       }
     }
-    ;
 
     // Remove items from the type specific array
     for (var i = game[item.type].length - 1; i >= 0; i--) {
@@ -250,7 +248,6 @@ var game = {
           break;
         }
       }
-      ;
       return;
     }
 
