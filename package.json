@@ -6,7 +6,9 @@
   "main": "server.js",
   "private": true,
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "build": "./node_modules/.bin/cross-env NODE_ENV=production webpack --config ./dev/webpack.config.js",
+    "watch": "./node_modules/.bin/cross-env NODE_ENV=production webpack --config ./dev/webpack.config.js --watch"
   },
   "engines": {
     "node": "4.4.3",
@@ -14,5 +16,11 @@
   },
   "dependencies": {
     "ws": "^1.1.0"
+  },
+  "devDependencies": {
+    "cross-env": "^1.0.8",
+    "git-rev-sync": "^1.6.0",
+    "html-webpack-plugin": "^2.22.0",
+    "webpack": "^1.13.1"
   }
 }
