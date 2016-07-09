@@ -1,6 +1,6 @@
 var sounds = {
   list: {
-    "bullet": ["bullet1", "bullet2"],
+    "bullet": ['gun'],
     "heatseeker": ["heatseeker1", "heatseeker2"],
     "fireball": ["laser1", "laser2"],
     "cannon-ball": ["cannon1", "cannon2"],
