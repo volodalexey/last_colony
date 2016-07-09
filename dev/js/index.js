@@ -4,7 +4,7 @@ var Inferno = require('inferno'),
   InfernoRouter = require('./abstract_router'),
   Router = InfernoRouter.Router,
   Route = InfernoRouter.Route,
-  Link = InfernoRouter.Link,
+  routeTo = InfernoRouter.routeTo,
   browserHistory = InfernoRouter.browserHistory;
 
 var Navigation = CreateClass({
@@ -14,7 +14,7 @@ var Navigation = CreateClass({
 });
 // <Router history={ browserHistory }>
 InfernoDOM.render((
-  <Router url="/" history={ browserHistory }>
+  <Router history={ browserHistory }>
     <Route path="/" component={ Navigation } />
   </Router>
 ), document.body);

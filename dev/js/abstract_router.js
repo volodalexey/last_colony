@@ -162,7 +162,7 @@ var Router = CreateClass({
   },
   render: function() {
     var children = toArray(this.props.children);
-    var url = this.props.url || this.state.url;
+    var url = this.props.url || this.state.url || '/';
     var wrapperComponent = this.props.component;
     var hashbang = this.props.hashbang;
 
@@ -258,5 +258,6 @@ module.exports = {
   Route: Route,
   Router: Router,
   Link: Link,
-  browserHistory: browserHistory
+  browserHistory: browserHistory,
+  routeTo: routeTo
 };
