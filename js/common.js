@@ -203,3 +203,11 @@ function isItemDead(uid) {
   var item = game.getItemByUid(uid);
   return (!item || item.lifeCode == "dead");
 }
+
+function hideGameLayer() {
+  Array.prototype.slice
+    .call(document.querySelectorAll('.gamelayer'))
+    .forEach(function(el) {
+      el.style.display = 'none';
+    });
+}

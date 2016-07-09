@@ -7,9 +7,9 @@ var game = {
   init: function() {
     mouse.init();
     sidebar.init();
-    sounds.init(0.5);
+    sounds.init(1);
 
-    document.querySelector('.gamelayer').style.display = 'none';
+    hideGameLayer();
     document.querySelector('#gamestartscreen').style.display = 'block';
 
     game.backgroundCanvas = document.getElementById('gamebackgroundcanvas');
@@ -22,7 +22,7 @@ var game = {
     game.canvasHeight = game.backgroundCanvas.height;
   },
   start: function() {
-    document.querySelector('.gamelayer').style.display = 'none';
+    hideGameLayer();
     document.querySelector('#gameinterfacescreen').style.display = 'block';
     game.running = true;
     game.refreshBackground = true;
@@ -414,7 +414,7 @@ var game = {
     }
 
     // Display the message box and wait for user to click a button
-    document.querySelector('#messageboxscreen').show();
+    document.querySelector('#messageboxscreen').style.display = 'block';
   },
   messageBoxOK: function() {
     document.querySelector('#messageboxscreen').style.display = 'none';

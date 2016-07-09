@@ -14,7 +14,7 @@ var multiplayer = {
     // Display multiplayer lobby screen after connecting
     this.websocket.onopen = function() {
       // Hide the starting menu layer
-      self.hideGameLayer();
+      hideGameLayer();
       document.querySelector('#multiplayerlobbyscreen').style.display = 'block';
     };
 
@@ -100,13 +100,6 @@ var multiplayer = {
       multiplayer.closeAndExit();
     }
   },
-  hideGameLayer: function() {
-    Array.prototype.slice
-      .call(document.querySelectorAll('.gamelayer'))
-      .forEach(function(el) {
-        el.style.display = 'none';
-      });
-  },
   closeAndExit: function() {
     // clear handlers and close connection
     multiplayer.websocket.onopen = null;
@@ -118,7 +111,7 @@ var multiplayer = {
     document.getElementById('multiplayergameslist').disabled = false;
     document.getElementById('multiplayerjoin').disabled = false;
     // Show the starting menu layer
-    this.hideGameLayer();
+    hideGameLayer();
     document.querySelector('#gamestartscreen').style.display = 'block';
   },
   sendWebSocketMessage: function(messageObject) {
@@ -126,7 +119,7 @@ var multiplayer = {
   },
   currentLevel: 0,
   initMultiplayerLevel: function(messageObject) {
-    this.hideGameLayer();
+    hideGameLayer();
     var i, spawnLocations = messageObject.spawnLocations;
 
     // Initialize multiplayer related variables

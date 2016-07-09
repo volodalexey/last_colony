@@ -2,10 +2,10 @@ var singleplayer = {
   // Begin single player campaign
   start: function() {
     // Hide the starting menu layer
-    this.hideGameLayer();
+    hideGameLayer();
 
     // Begin with the first level
-    singleplayer.currentLevel = 0;
+    singleplayer.currentLevel = 1;
     game.type = "singleplayer";
     game.team = "blue";
 
@@ -14,17 +14,10 @@ var singleplayer = {
   },
   exit: function() {
     // Show the starting menu layer
-    this.hideGameLayer();
+    hideGameLayer();
     document.querySelector('#gamestartscreen').style.display = 'block';
   },
   currentLevel: 0,
-  hideGameLayer: function() {
-    Array.prototype.slice
-      .call(document.querySelectorAll('.gamelayer'))
-      .forEach(function(el) {
-        el.style.display = 'none';
-      });
-  },
   startCurrentLevel: function() {
     // Load all the items for the level
     var level = maps.singleplayer[singleplayer.currentLevel];
@@ -106,22 +99,22 @@ var singleplayer = {
       var moreLevels = (singleplayer.currentLevel < maps.singleplayer.length - 1);
       if (moreLevels) {
         game.showMessageBox("Mission Accomplished.", function() {
-          self.hideGameLayer();
+          hideGameLayer();
           singleplayer.currentLevel++;
           singleplayer.startCurrentLevel();
         });
       } else {
         game.showMessageBox("Mission Accomplished.<br><br>This was the last mission in the campaign.<br><br>Thank You for playing.", function() {
-          self.hideGameLayer();
+          hideGameLayer();
           document.querySelector('#gamestartscreen').style.display = 'block';
         });
       }
     } else {
       game.showMessageBox("Mission Failed.<br><br>Try again?", function() {
-        self.hideGameLayer();
+        hideGameLayer();
         singleplayer.startCurrentLevel();
       }, function() {
-        self.hideGameLayer();
+        hideGameLayer();
         document.querySelector('#gamestartscreen').style.display = 'block';
       });
     }
