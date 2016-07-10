@@ -5,7 +5,7 @@ var singleplayer = {
     hideGameLayer();
 
     // Begin with the first level
-    singleplayer.currentLevel = 1;
+    singleplayer.currentLevel = 2;
     game.type = "singleplayer";
     game.team = "blue";
 

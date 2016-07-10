@@ -19,7 +19,7 @@ var aircraft = {
             pixelShadowHeight:40,
             spriteImages:[
                 {name:"fly",count:4,directions:8}            
-            ],
+            ]
         },
         "wraith":{
             name:"wraith",
@@ -40,7 +40,7 @@ var aircraft = {
             pixelShadowHeight:40,
             spriteImages:[
                 {name:"fly",count:1,directions:8}            
-            ],
+            ]
         }                                
     },
     defaults:{
