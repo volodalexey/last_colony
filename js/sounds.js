@@ -5,6 +5,7 @@ var sounds = {
     "fireball": ["laser1", "laser2"],
     "cannon-ball": ["cannon1", "cannon2"],
     "cannon-match": ['cannon-match'],
+    "bullet-match": ['bullet-match'],
     "message-received": ["message"],
     "acknowledge-attacking": ["engaging"],
     "acknowledge-moving": ["yup", "roger1", "roger2"]

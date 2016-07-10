@@ -44,7 +44,8 @@ var bullets = {
       spriteImages: [
         {name: "fly", count: 1, directions: 8},
         {name: "explode", count: 3}
-      ]
+      ],
+      matchSound: 'bullet-match'
     }
   },
   defaults: {

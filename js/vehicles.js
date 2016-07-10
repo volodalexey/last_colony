@@ -367,9 +367,6 @@ var vehicles = {
 
       var grid = game.currentMapPassableGrid.map(g => g.slice());
       // Allow destination to be "movable" so that algorithm can find a path
-      if (this.uid == -2) {
-        console.log(grid[dst_y][dst_x])
-      }
       if (destination.type == "buildings" || destination.type == "terrain") {
         grid[dst_y][dst_x] = 0;
       }
