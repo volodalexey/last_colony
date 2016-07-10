@@ -70,7 +70,7 @@ var vehicles = {
       turnSpeed: 4,
       spriteImages: [
         {name: "stand", count: 1, directions: 8}
-      ],
+      ]
     }
   },
   defaults: {
@@ -129,26 +129,27 @@ var vehicles = {
     isValidTarget: isValidTarget,
     findTargetsInSight: findTargetsInSight,
     processOrders: function() {
+      var pow = Math.pow;
       this.lastMovementX = 0;
       this.lastMovementY = 0;
       if (this.reloadTimeLeft) {
         this.reloadTimeLeft--;
       }
-      var target;
+      var target, moving;
       switch (this.orders.type) {
         case "move":
           // Move towards destination until distance from destination is less than vehicle radius
-          var distanceFromDestinationSquared = (Math.pow(this.orders.to.x - this.x, 2) + Math.pow(this.orders.to.y - this.y, 2));
-          if (distanceFromDestinationSquared < Math.pow(this.radius / game.gridSize, 2)) {
+          var distanceFromDestinationSquared = (pow(this.orders.to.x - this.x, 2) + pow(this.orders.to.y - this.y, 2));
+          if (distanceFromDestinationSquared < pow(this.radius / game.gridSize, 2)) {
             //Stop when within one radius of the destination
             this.orders = {type: "stand"};
             return;
-          } else if (distanceFromDestinationSquared < Math.pow(this.radius * 3 / game.gridSize, 2)) {
+          } else if (distanceFromDestinationSquared < pow(this.radius * 3 / game.gridSize, 2)) {
             //Stop when within 3 radius of the destination if colliding with something
             this.orders = {type: "stand"};
             return;
           } else {
-            if (this.colliding && (Math.pow(this.orders.to.x - this.x, 2) + Math.pow(this.orders.to.y - this.y, 2)) < Math.pow(this.radius * 5 / game.gridSize, 2)) {
+            if (this.colliding && (distanceFromDestinationSquared) < pow(this.radius * 5 / game.gridSize, 2)) {
               // Count collsions within 5 radius distance of goal
               if (!this.orders.collisionCount) {
                 this.orders.collisionCount = 1
@@ -161,7 +162,7 @@ var vehicles = {
                 return;
               }
             }
-            var moving = this.moveTo(this.orders.to);
+            moving = this.moveTo(this.orders.to);
             // Pathfinding couldn't find a path so stop
             if (!moving) {
               this.orders = {type: "stand"};
@@ -176,7 +177,7 @@ var vehicles = {
             return;
           }
           // Move to middle of oil field
-          var target = {x: this.orders.to.x + 1, y: this.orders.to.y + 0.5, type: "terrain"};
+          target = {x: this.orders.to.x + 1, y: this.orders.to.y + 0.5, type: "terrain"};
           var distanceFromTargetSquared = (Math.pow(target.x - this.x, 2) + Math.pow(target.y - this.y, 2));
           if (distanceFromTargetSquared < Math.pow(this.radius * 2 / game.gridSize, 2)) {
             // After reaching oil field, turn harvester to point towards left (direction 6)
@@ -200,7 +201,7 @@ var vehicles = {
               });
             }
           } else {
-            var moving = this.moveTo(target);
+            moving = this.moveTo(target);
             // Pathfinding couldn't find a path so stop
             if (!moving) {
               this.orders = {type: "stand"};
@@ -260,7 +261,7 @@ var vehicles = {
               }
             }
           } else {
-            var moving = this.moveTo(this.orders.to);
+            moving = this.moveTo(this.orders.to);
             // Pathfinding couldn't find a path so stop
             if (!moving) {
               this.orders = {type: "stand"};

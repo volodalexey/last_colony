@@ -69,7 +69,7 @@ var sidebar = {
       game.rebuildBuildableGrid();
       // Compare with buildable grid to see where we need to place the building
       var placementGrid = buildings.list[game.deployBuilding].buildableGrid;
-      game.placementGrid = Object.assign([], placementGrid);
+      game.placementGrid = placementGrid.map(g => g.slice());
       game.canDeployBuilding = true;
       for (var i = game.placementGrid.length - 1; i >= 0; i--) {
         for (var j = game.placementGrid[i].length - 1; j >= 0; j--) {

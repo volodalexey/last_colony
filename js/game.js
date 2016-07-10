@@ -300,7 +300,7 @@ var game = {
   speedAdjustmentFactor: 1 / 64,
   turnSpeedAdjustmentFactor: 1 / 8,
   rebuildPassableGrid: function() {
-    game.currentMapPassableGrid = Object.assign([], game.currentMapTerrainGrid);
+    game.currentMapPassableGrid = game.currentMapTerrainGrid.map(g => g.slice());
     for (var i = game.items.length - 1; i >= 0; i--) {
       var item = game.items[i];
       if (item.type == "buildings" || item.type == "terrain") {
@@ -310,15 +310,12 @@ var game = {
               game.currentMapPassableGrid[item.y + y][item.x + x] = 1;
             }
           }
-          ;
         }
-        ;
       }
     }
-    ;
   },
   rebuildBuildableGrid: function() {
-    game.currentMapBuildableGrid = Object.assign([], game.currentMapTerrainGrid);
+    game.currentMapBuildableGrid = game.currentMapTerrainGrid.map(g => g.slice());
     for (var i = game.items.length - 1; i >= 0; i--) {
       var item = game.items[i];
       if (item.type == "buildings" || item.type == "terrain") {
@@ -328,9 +325,7 @@ var game = {
               game.currentMapBuildableGrid[item.y + y][item.x + x] = 1;
             }
           }
-          ;
         }
-        ;
       } else if (item.type == "vehicles") {
         // Mark all squares under or near the vehicle as unbuildable
         var radius = item.radius / game.gridSize;
@@ -342,12 +337,9 @@ var game = {
           for (var y = y1; y <= y2; y++) {
             game.currentMapBuildableGrid[y][x] = 1;
           }
-          ;
         }
-        ;
       }
     }
-    ;
   },
   // Functions for communicating with player
   characters: {

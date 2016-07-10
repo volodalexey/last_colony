@@ -193,7 +193,7 @@ var multiplayer = {
     game.currentMapPassableGrid = undefined;
 
     // Load Starting Cash For Game
-    game.cash = Object.assign([], level.cash);
+    game.cash = Object.assign({}, level.cash);
 
     // Enable the enter mission button once all assets are loaded
     if (loader.loaded) {
