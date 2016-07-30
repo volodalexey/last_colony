@@ -20,12 +20,7 @@ const path = require('path'),
       template: path.join(__dirname, d_ejs, 'index.ejs'),
       inject: 'body'
     }),
-    new ExtractPlugin(bundle_name + '.' + (production ? 'min' : '') + '.css')
-  ],
-  dist_file = bundle_name + '.' + (production ? 'min' : '') + '.js';
-
-if (production) {
-  webpack_plugins.push(
+    new ExtractPlugin(bundle_name + '.' + (production ? 'min' : '') + '.css'),
     new webpack.DefinePlugin({
       'process.env': {
         'NODE_ENV': JSON.stringify(process.env.NODE_ENV),
@@ -33,10 +28,15 @@ if (production) {
         'GIT_LONG': JSON.stringify(git.long())
       }
     })
-    // ,new webpack.optimize.UglifyJsPlugin({
-    //   compress: {warnings: false}
-    // })
-  )
+  ],
+  dist_file = bundle_name + '.' + (production ? 'min' : '') + '.js';
+
+if (production) {
+  // webpack_plugins.push(
+  //   new webpack.optimize.UglifyJsPlugin({
+  //     compress: {warnings: false}
+  //   })
+  // )
 }
 
 var babel_loader = {

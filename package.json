@@ -15,19 +15,19 @@
     "npm": "2.15.1"
   },
   "dependencies": {
-    "ws": "^1.1.0"
+    "ws": "^1.1.1"
   },
   "devDependencies": {
-    "babel-core": "^6.10.4",
+    "babel-core": "^6.11.4",
     "babel-loader": "^6.2.4",
-    "babel-plugin-inferno": "^0.7.6",
+    "babel-plugin-inferno": "^0.7.7",
     "cross-env": "^1.0.8",
     "css-loader": "^0.23.1",
     "extract-text-webpack-plugin": "^1.0.1",
     "git-rev-sync": "^1.6.0",
     "html-webpack-plugin": "^2.22.0",
-    "inferno": "^0.7.21",
-    "inferno-create-class": "^0.7.21",
+    "inferno": "^0.7.24",
+    "inferno-create-class": "^0.7.24",
     "inferno-dom": "^0.7.21",
     "json-loader": "^0.5.4",
     "less": "^2.7.1",
