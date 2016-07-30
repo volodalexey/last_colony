@@ -64,9 +64,12 @@ var multiplayer = {
     'empty': 'Open'
   },
   updateRoomStatus: function(status) {
-    var list = document.querySelector("#multiplayergameslist");
-    list.options = []; // remove old options
-    for (var i = 0; i < status.length; i++) {
+    var i,
+      list = document.querySelector("#multiplayergameslist");
+    while (list.options.length > 0) {
+      list.remove(0);
+    }
+    for (i = 0; i < status.length; i++) {
       var key = "Game " + (i + 1) + ". " + this.statusMessages[status[i]];
       var option = document.createElement('option');
       option.disabled = status[i] == "running" || status[i] == "starting";

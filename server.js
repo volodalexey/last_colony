@@ -13,36 +13,30 @@ const
   webSocketServer = new WebSocketServer({server: server});
 
 const
-  /**
-   * convert any objects to JSON string format
-   */
-  toJSON = function(_object) {
-    return JSON.stringify(_object);
-  },
-  safe = function() {
-    let arg = Array.from(arguments),
-      func = arg[0], data = arg.length > 1;
-    if (data) {
-      arg.splice(0, 1);
+  fromJSON = function(string) {
+    if (typeof string === 'string') {
+      if (string) {
+        return JSON.parse(string);
+      }
+      return string
     }
+    throw new Error('Invalid fromJSON argument')
+  },
+  safe = function(func, data) {
     if (!func || typeof func !== 'function') {
       throw new Error('Invalid use!');
     }
     let result;
     try {
-      if (data) {
-        result = func.apply(data);
-      } else {
-        result = func();
-      }
+      result = func.apply(this, data);
     } catch (e) {
       console.error(e);
     }
     return result;
   },
-  safeToJSON = function() {
+  safeFromJSON = function() {
     let data = Array.from(arguments);
-    return safe(toJSON, data);
+    return safe(fromJSON, data);
   };
 
 // read async file by provided path
@@ -289,7 +283,7 @@ const
 
 // Initialize a set of rooms
 var gameRooms = [];
-for (var i = 0; i < 10; i++) {
+for (var i = 0; i < 2; i++) {
   gameRooms.push({status: "empty", players: [], roomId: i + 1});
 }
 
@@ -315,52 +309,50 @@ webSocketServer.on('connection', (wsc) => {
 
   // On Message event handler for a connection
   wsc.on('message', function(message) {
-    if (message.type === 'utf8') {
-      let clientMessage = JSON.parse(message.utf8Data);
-      switch (clientMessage.type) {
-        case "join_room":
-          var room = joinRoom(player, clientMessage.roomId);
-          sendRoomListToEveryone();
-          if (room.players.length == 2) {
-            initGame(room);
+    var clientMessage = safeFromJSON(message);
+    switch (clientMessage.type) {
+      case "join_room":
+        var room = joinRoom(player, clientMessage.roomId);
+        sendRoomListToEveryone();
+        if (room.players.length == 2) {
+          initGame(room);
+        }
+        break;
+      case "leave_room":
+        leaveRoom(player, clientMessage.roomId);
+        sendRoomListToEveryone();
+        break;
+      case "initialized_level":
+        player.room.playersReady++;
+        if (player.room.playersReady == 2) {
+          startGame(player.room);
+        }
+        break;
+      case "latency_pong":
+        finishMeasuringLatency(player, clientMessage);
+        // Measure latency atleast thrice
+        if (player.latencyTrips.length < 3) {
+          measureLatency(player);
+        }
+        break;
+      case "command":
+        if (player.room && player.room.status == "running") {
+          if (clientMessage.uids) {
+            player.room.commands.push({uids: clientMessage.uids, details: clientMessage.details});
           }
-          break;
-        case "leave_room":
-          leaveRoom(player, clientMessage.roomId);
-          sendRoomListToEveryone();
-          break;
-        case "initialized_level":
-          player.room.playersReady++;
-          if (player.room.playersReady == 2) {
-            startGame(player.room);
-          }
-          break;
-        case "latency_pong":
-          finishMeasuringLatency(player, clientMessage);
-          // Measure latency atleast thrice
-          if (player.latencyTrips.length < 3) {
-            measureLatency(player);
-          }
-          break;
-        case "command":
-          if (player.room && player.room.status == "running") {
-            if (clientMessage.uids) {
-              player.room.commands.push({uids: clientMessage.uids, details: clientMessage.details});
-            }
-            player.room.lastTickConfirmed[player.color] = clientMessage.currentTick + player.tickLag;
-          }
-          break;
-        case "lose_game":
-          endGame(player.room, "The " + player.color + " team has been defeated.");
-          break;
-        case "chat":
-          if (player.room && player.room.status == "running") {
-            var cleanedMessage = clientMessage.message.replace(/[<>]/g, "");
-            sendRoomWebSocketMessage(player.room, {type: "chat", from: player.color, message: cleanedMessage});
-            console.log(clientMessage.message, "was cleaned to", cleanedMessage)
-          }
-          break;
-      }
+          player.room.lastTickConfirmed[player.color] = clientMessage.currentTick + player.tickLag;
+        }
+        break;
+      case "lose_game":
+        endGame(player.room, "The " + player.color + " team has been defeated.");
+        break;
+      case "chat":
+        if (player.room && player.room.status == "running") {
+          var cleanedMessage = clientMessage.message.replace(/[<>]/g, "");
+          sendRoomWebSocketMessage(player.room, {type: "chat", from: player.color, message: cleanedMessage});
+          console.log(clientMessage.message, "was cleaned to", cleanedMessage)
+        }
+        break;
     }
   });
 
