@@ -1,6 +1,8 @@
 const
   React = require('react'),
   connect = require('react-redux').connect,
+  browserHistory = require('react-router').browserHistory,
+  PATH = require('../../common/constants').PATH,
   login_actions = require('../js/actions/login_actions');
 
 let input_username, input_password;
@@ -63,6 +65,7 @@ const mapDispatchToProps = (dispatch) => {
       setTimeout(() => {
         dispatch(login_actions.pendingCredentials(false, false));
         dispatch(login_actions.loggedInCredentials(true));
+        browserHistory.push(PATH.MENU);
       }, 500);
     },
     handleChangeUsername: (event) => {

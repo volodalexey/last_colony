@@ -10,6 +10,14 @@ const
   },
   CACHE_ENV = {
     [ENV_KEYS.CACHE]: 'cache'
+  },
+  PATH = {
+    LOGIN: '/login',
+    MENU: '/menu'
   };
 
-module.exports = {NODE_ENV, CACHE_ENV};
+module.exports = {
+  NODE_ENV,
+  CACHE_ENV,
+  PATH
+};

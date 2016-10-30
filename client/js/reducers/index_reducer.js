@@ -9,7 +9,7 @@ const
     password: '',
     pending_credentials: false,
     invalid_credentials: false,
-    logged_in: false
+    logged_in_credentials: false
   };
 
 const reducer = (state = INITIAL_STATE, action) => {
@@ -27,7 +27,7 @@ const reducer = (state = INITIAL_STATE, action) => {
       state.invalid_credentials = action.invalid;
       return Object.assign({}, state);
     case action_constants.LOGGED_IN_CREDENTIALS:
-      state.logged_in = action.logged_in;
+      state.logged_in_credentials = action.logged_in_credentials;
       return Object.assign({}, state);
     default:
       return state;
