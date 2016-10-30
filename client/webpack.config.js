@@ -6,7 +6,7 @@ const
   HtmlWebpackPlugin = require('html-webpack-plugin'),
   ExtractTextPlugin = require('extract-text-webpack-plugin'),
   gitRevSync = require('git-rev-sync'),
-  entry_file = 'index.jsx',
+  entry_file = 'router.jsx',
   d_js = 'js', d_jsx = 'jsx', d_ejs = 'ejs', d_dist = 'dist', d_less = 'less',
   jsx_path = path.join(__dirname, d_jsx),
   less_path = path.join(__dirname, d_less),
@@ -53,7 +53,8 @@ module.exports =  {
   },
   output: {
     filename: dist_bundle_file,
-    path: dist_path
+    path: dist_path,
+    publicPath: '/'
   },
   module: {
     loaders: [
@@ -80,6 +81,7 @@ module.exports =  {
     // hot: true,
     historyApiFallback: true,
     contentBase: dist_path,
+    publicPath: '/'
     // proxy: {
     //   '/api': 'http://localhost:9000',
     //   '/auth': 'http://localhost:9000'

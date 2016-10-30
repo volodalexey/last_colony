@@ -12,6 +12,7 @@ const
   reducer = require('../js/reducers/index_reducer'),
   // components
   LoginCredentials = require('./login_credentials'),
+  SinglePlayer = require('./single_player'),
   Menu = require('./menu');
 
 let store = createStore(reducer);
@@ -20,15 +21,15 @@ const
   checkOnlyLoggedInRedirect = (nextState, replace) => {
     let state = store.getState();
     if (!state.logged_in_credentials) {
-      replace(PATH.LOGIN);
+      replace(PATH._LOGIN);
     }
   },
   checkLoggedInRedirect = (nextState, replace) => {
     let state = store.getState();
     if (state.logged_in_credentials) {
-      replace(PATH.MENU);
+      replace(PATH._MENU);
     } else {
-      replace(PATH.LOGIN);
+      replace(PATH._LOGIN);
     }
   };
 
@@ -37,8 +38,11 @@ ReactDOM.render((
     <Router history={ReactRouter.browserHistory}>
       <Route path="/" onEnter={checkLoggedInRedirect}/>
       <Route path="/">
-        <Route path="login" component={LoginCredentials} />
-        <Route path="menu" component={Menu} onEnter={checkOnlyLoggedInRedirect}/>
+        <Route path={PATH.LOGIN} component={LoginCredentials} />
+        <Route path={PATH.MENU} component={Menu} onEnter={checkOnlyLoggedInRedirect}/>
+        <Route path={PATH.GAME} onEnter={checkOnlyLoggedInRedirect}>
+          <Route path={PATH.SINGLE_PLAYER} component={SinglePlayer} />
+        </Route>
       </Route>
       <Route path="*" onEnter={checkLoggedInRedirect}/>
     </Router>

@@ -65,7 +65,7 @@ const mapDispatchToProps = (dispatch) => {
       setTimeout(() => {
         dispatch(login_actions.pendingCredentials(false, false));
         dispatch(login_actions.loggedInCredentials(true));
-        browserHistory.push(PATH.MENU);
+        browserHistory.push(PATH._MENU);
       }, 500);
     },
     handleChangeUsername: (event) => {
