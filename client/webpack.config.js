@@ -49,7 +49,7 @@ module.exports =  {
   debug: isDevelopment,
   entry: {
     app: path.join(__dirname, d_jsx, entry_file),
-    vendor: ['react', 'react-dom']
+    vendor: ['react', 'react-dom', 'react-router', 'redux', 'react-redux']
   },
   output: {
     filename: dist_bundle_file,
@@ -71,6 +71,9 @@ module.exports =  {
         loader: extractCSS.extract(['css', 'less'])
       }
     ]
+  },
+  resolve: {
+    extensions: ['', '.js', '.jsx']
   },
   plugins: webpack_plugins,
   devServer: {
