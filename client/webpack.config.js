@@ -6,7 +6,7 @@ const
   HtmlWebpackPlugin = require('html-webpack-plugin'),
   ExtractTextPlugin = require('extract-text-webpack-plugin'),
   gitRevSync = require('git-rev-sync'),
-  entry_file = 'index.js',
+  entry_file = 'index.jsx',
   d_js = 'js', d_jsx = 'jsx', d_ejs = 'ejs', d_dist = 'dist', d_less = 'less',
   jsx_path = path.join(__dirname, d_jsx),
   less_path = path.join(__dirname, d_less),
@@ -48,7 +48,7 @@ if (isProduction) {
 module.exports =  {
   debug: isDevelopment,
   entry: {
-    app: path.join(__dirname, d_js, entry_file),
+    app: path.join(__dirname, d_jsx, entry_file),
     vendor: ['react', 'react-dom']
   },
   output: {
@@ -72,5 +72,14 @@ module.exports =  {
       }
     ]
   },
-  plugins: webpack_plugins
+  plugins: webpack_plugins,
+  devServer: {
+    // hot: true,
+    historyApiFallback: true,
+    contentBase: dist_path,
+    // proxy: {
+    //   '/api': 'http://localhost:9000',
+    //   '/auth': 'http://localhost:9000'
+    // },
+  }
 };

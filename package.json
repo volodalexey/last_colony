@@ -7,7 +7,9 @@
   "private": true,
   "scripts": {
     "start": "node server.js",
-    "build": "./node_modules/.bin/cross-env NODE_ENV=production webpack --config ./dev/webpack.config.js",
+    "build-client": "./node_modules/.bin/cross-env NODE_ENV=production CACHE=true ./node_modules/.bin/webpack --config ./client/webpack.config.js",
+    "build-client-dev": "./node_modules/.bin/cross-env NODE_ENV=development ./node_modules/.bin/webpack --config ./client/webpack.config.js",
+    "server-client-dev": "./node_modules/.bin/cross-env NODE_ENV=development ./node_modules/.bin/webpack-dev-server --port 9696 --config ./client/webpack.config.js",
     "watch": "./node_modules/.bin/cross-env NODE_ENV=production webpack --config ./dev/webpack.config.js --watch"
   },
   "engines": {
@@ -28,6 +30,9 @@
     "html-webpack-plugin": "^2.24.0",
     "less": "^2.7.1",
     "less-loader": "^2.2.3",
-    "webpack": "^1.13.3"
+    "react": "^15.3.2",
+    "react-dom": "^15.3.2",
+    "webpack": "^1.13.3",
+    "webpack-dev-server": "^1.16.2"
   }
 }
