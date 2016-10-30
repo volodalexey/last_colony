@@ -1,10 +1,8 @@
 const
+  LOCALE = require('../../../common/constants').LOCALE,
   action_constants = require('../constants/action_constants'),
   INITIAL_STATE = {
-    credentials: {
-      invalid: false,
-      pending: false
-    },
+    locale: LOCALE.EN,
     username: '',
     password: '',
     pending_credentials: false,
@@ -28,6 +26,10 @@ const reducer = (state = INITIAL_STATE, action) => {
       return Object.assign({}, state);
     case action_constants.LOGGED_IN_CREDENTIALS:
       state.logged_in_credentials = action.logged_in_credentials;
+      return Object.assign({}, state);
+
+    case action_constants.CHANGE_LOCALE:
+      state.locale = action.locale;
       return Object.assign({}, state);
     default:
       return state;

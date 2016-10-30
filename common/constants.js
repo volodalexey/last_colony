@@ -27,10 +27,15 @@ const
     _SINGLE_PLAYER: SLASH + SINGLE_PLAYER,
     GAME_SINGLE_PLAYER: GAME + SLASH + SINGLE_PLAYER,
     _GAME_SINGLE_PLAYER: SLASH + GAME + SLASH + SINGLE_PLAYER,
+  },
+  LOCALE = {
+    EN: 'en',
+    RU: 'ru'
   };
 
 module.exports = {
   NODE_ENV,
   CACHE_ENV,
-  PATH
+  PATH,
+  LOCALE
 };

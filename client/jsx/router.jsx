@@ -11,6 +11,7 @@ const
   Less = require('../less/index.less'),
   reducer = require('../js/reducers/index_reducer'),
   // components
+  Locale = require('./locale'),
   LoginCredentials = require('./login_credentials'),
   SinglePlayer = require('./single_player'),
   Menu = require('./menu');
@@ -35,16 +36,18 @@ const
 
 ReactDOM.render((
   <Provider store={store}>
-    <Router history={ReactRouter.browserHistory}>
-      <Route path="/" onEnter={checkLoggedInRedirect}/>
-      <Route path="/">
-        <Route path={PATH.LOGIN} component={LoginCredentials} />
-        <Route path={PATH.MENU} component={Menu} onEnter={checkOnlyLoggedInRedirect}/>
-        <Route path={PATH.GAME} onEnter={checkOnlyLoggedInRedirect}>
-          <Route path={PATH.SINGLE_PLAYER} component={SinglePlayer} />
+    <Locale>
+      <Router history={ReactRouter.browserHistory}>
+        <Route path="/" onEnter={checkLoggedInRedirect}/>
+        <Route path="/">
+          <Route path={PATH.LOGIN} component={LoginCredentials} />
+          <Route path={PATH.MENU} component={Menu} onEnter={checkOnlyLoggedInRedirect}/>
+          <Route path={PATH.GAME} onEnter={checkOnlyLoggedInRedirect}>
+            <Route path={PATH.SINGLE_PLAYER} component={SinglePlayer} />
+          </Route>
         </Route>
-      </Route>
-      <Route path="*" onEnter={checkLoggedInRedirect}/>
-    </Router>
+        <Route path="*" onEnter={checkLoggedInRedirect}/>
+      </Router>
+    </Locale>
   </Provider>
 ), document.querySelector('[data-role="app"]'));
