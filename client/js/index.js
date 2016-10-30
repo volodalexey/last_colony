@@ -1,5 +1,5 @@
-var Inferno = require('inferno'),
-  InfernoDOM = require('inferno-dom'),
+var React = require('react'),
+  reactDOM = require('inferno-dom'),
   Canvas = require('./canvas'),
   events = require('./events'),
   Less = require('../less/index.less');
