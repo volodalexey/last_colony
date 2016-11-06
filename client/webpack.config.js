@@ -49,7 +49,8 @@ module.exports =  {
   debug: isDevelopment,
   entry: {
     app: path.join(__dirname, d_jsx, entry_file),
-    vendor: ['react', 'react-dom', 'react-router', 'redux', 'react-redux']
+    vendor: ['react', 'react-dom', 'react-router', 'redux', 'react-redux',
+      'react-intl', 'react-intl/locale-data/en', 'react-intl/locale-data/ru']
   },
   output: {
     filename: dist_bundle_file,

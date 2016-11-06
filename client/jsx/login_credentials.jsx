@@ -3,7 +3,9 @@ const
   connect = require('react-redux').connect,
   browserHistory = require('react-router').browserHistory,
   PATH = require('../../common/constants').PATH,
-  login_actions = require('../js/actions/login_actions');
+  login_actions = require('../js/actions/login_actions'),
+  FormattedMessage = require('react-intl').FormattedMessage,
+  en_keys = require('../js/nls/en/common').keys;
 
 let input_username, input_password;
 
@@ -11,7 +13,7 @@ const LoginCredentials = (props) => {
   return <div className="wrap-login-form">
     <form onSubmit={props.onSubmit} className="login-form">
       <div className="title">
-        <span>Login</span>
+        <FormattedMessage id={en_keys.$LOGIN}/>
       </div>
       <input value={props.username} placeholder="Login" onChange={props.handleChangeUsername}
              ref={node => {
@@ -22,7 +24,7 @@ const LoginCredentials = (props) => {
                input_password = node
              }}/>
       <button type="submit" disabled={props.pending_credentials ? 'disabled' : null}>
-        Login
+        <FormattedMessage id={en_keys.$LOGIN}/>
       </button>
     </form>
   </div>

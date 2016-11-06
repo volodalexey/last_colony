@@ -7,8 +7,8 @@ const
   addLocaleData = ReactIntl.addLocaleData,
   en = require('react-intl/locale-data/en'),
   ru = require('react-intl/locale-data/ru'),
-  en_messages = require('../js/nls/en/common'),
-  ru_messages = require('../js/nls/ru/common'),
+  en_messages = require('../js/nls/en/common').messages,
+  ru_messages = require('../js/nls/ru/common').messages,
   messages_dic = {
     [LOCALE.EN]: en_messages,
     [LOCALE.RU]: ru_messages,

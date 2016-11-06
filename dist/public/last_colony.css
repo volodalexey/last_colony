@@ -35,3 +35,6 @@ a:visited {
 canvas {
   display: block;
 }
+.canvas-wrapper {
+  position: relative;
+}

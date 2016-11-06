@@ -6,21 +6,22 @@ const
   Link = require('react-router').Link,
   connect = require('react-redux').connect,
   basic_actions = require('../js/actions/basic_actions'),
-  FormattedMessage = require('react-intl').FormattedMessage;
+  FormattedMessage = require('react-intl').FormattedMessage,
+  en_keys = require('../js/nls/en/common').keys;
 
 const Menu = (props) => {
   return <div>
     <FormattedMessage
-      id="welcome"
+      id={en_keys.$WELCOME}
       values={{name: <b>Bob</b>, unreadCount: 100}}
     />
     <button type="button" onClick={props.handleChangeLocale}>
-      Change Locale
+      <FormattedMessage id={en_keys.$CHANGE_LOCALE}/>
     </button>
     <ul>
       <li>
         <Link to={PATH._GAME_SINGLE_PLAYER} >
-          Single player
+          <FormattedMessage id={en_keys.$SINGLE_PLAYER}/>
         </Link>
       </li>
     </ul>
