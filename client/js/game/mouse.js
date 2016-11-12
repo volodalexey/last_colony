@@ -167,7 +167,8 @@ const mouse = {
     mouse.gridX = Math.floor((mouse.gameX) / game.gridSize);
     mouse.gridY = Math.floor((mouse.gameY) / game.gridSize);
   },
-  init: function() {
+
+  init() {
     var mouseCanvas = document.querySelector("#gameforegroundcanvas");
     mouseCanvas.onmousemove = function(ev) {
       mouse.x = ev.pageX - mouseCanvas.offsetLeft;

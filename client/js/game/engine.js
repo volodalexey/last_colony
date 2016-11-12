@@ -1,20 +1,16 @@
-
+const
+  mouse = require('./mouse'),
+  buildings = require('./buildings'),
+  vehicles = require('./vehicles'),
+  items = {
+    buildings,
+    vehicles
+  };
 
 const
   engine = {
     init() {
       mouse.init();
-      sidebar.init();
-      sounds.init(1);
-
-      hideGameLayer();
-      document.querySelector('#gamestartscreen').style.display = 'block';
-
-      game.backgroundCanvas = document.getElementById('gamebackgroundcanvas');
-      game.backgroundContext = game.backgroundCanvas.getContext('2d');
-
-      game.foregroundCanvas = document.getElementById('gameforegroundcanvas');
-      game.foregroundContext = game.foregroundCanvas.getContext('2d');
 
       game.canvasWidth = game.backgroundCanvas.width;
       game.canvasHeight = game.backgroundCanvas.height;
@@ -83,13 +79,9 @@ const
       }
     },
     animationLoop: function() {
-      // Animate the Sidebar
-      sidebar.animate();
-
-      // Process orders for any item that handles it
-      for (var i = game.items.length - 1; i >= 0; i--) {
-        if (game.items[i].processOrders) {
-          game.items[i].processOrders();
+      for (var i = this.items.length - 1; i >= 0; i--) {
+        if (this.items[i].processOrders) {
+          this.items[i].processOrders();
         }
       }
 
@@ -157,39 +149,36 @@ const
         requestAnimationFrame(game.drawingLoop);
       }
     },
-    resetArrays: function() {
-      game.counter = 1;
-      game.items = [];
-      game.sortedItems = [];
-      game.buildings = [];
-      game.vehicles = [];
-      game.aircraft = [];
-      game.terrain = [];
-      game.triggeredEvents = [];
-      game.selectedItems = [];
-      game.sortedItems = [];
-      game.bullets = [];
+
+    resetArrays() {
+      this.counter = 1;
+      this.items = [];
+      this.sortedItems = [];
+      this.buildings = [];
+      this.vehicles = [];
+      this.aircraft = [];
+      this.terrain = [];
+      this.triggeredEvents = [];
+      this.selectedItems = [];
+      this.sortedItems = [];
+      this.bullets = [];
     },
+
     add: function(itemDetails) {
       // Set a unique id for the item
       if (!itemDetails.uid) {
-        itemDetails.uid = game.counter++;
+        itemDetails.uid = this.counter++;
       }
 
-      var item = window[itemDetails.type].add(itemDetails);
+      let item = items[itemDetails.type].add(itemDetails);
 
-      // Add the item to the items array
-      game.items.push(item);
-      // Add the item to the type specific array
-      game[item.type].push(item);
+      this.items.push(item);
+      this[item.type].push(item);
 
       if (item.type == "buildings" || item.type == "terrain") {
-        game.currentMapPassableGrid = undefined;
+        this.currentMapPassableGrid = undefined;
       }
 
-      if (item.type == "bullets") {
-        sounds.play(item.name);
-      }
       return item;
     },
     remove: function(item) {

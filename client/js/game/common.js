@@ -2,16 +2,9 @@ const loader = {
   loaded: true,
   loadedCount: 0, // Assets that have been loaded so far
   totalCount: 0, // Total number of assets that need to be loaded
-  loadImage: function(url) {
-    this.totalCount++;
-    this.loaded = false;
-    document.querySelector('#loadingscreen').style.display = 'block';
-    var image = new Image();
-    image.src = url;
-    image.onload = loader.itemLoaded;
-    return image;
-  },
+
   soundFileExtn: ".ogg",
+
   loadSound: function(url) {
     this.totalCount++;
     this.loaded = false;
@@ -21,6 +14,7 @@ const loader = {
     audio.addEventListener("canplaythrough", loader.itemLoaded, false);
     return audio;
   },
+
   loadAudio: function(url, callback) {
     var xhr = new XMLHttpRequest();
     xhr.open('GET', url, true);
@@ -38,12 +32,11 @@ const loader = {
     };
     xhr.send();
   },
+
   itemLoaded: function() {
     loader.loadedCount++;
-    document.querySelector('#loadingmessage').innerHTML = 'Loaded ' + loader.loadedCount + ' of ' + loader.totalCount;
     if (loader.loadedCount === loader.totalCount) {
       loader.loaded = true;
-      document.querySelector('#loadingscreen').style.display = 'none';
       if (loader.onload) {
         loader.onload();
         loader.onload = undefined;
@@ -59,7 +52,6 @@ function loadItem(name) {
   if (item.spriteArray) {
     return;
   }
-  item.spriteSheet = loader.loadImage('images/' + this.defaults.type + '/' + name + '.png');
   item.spriteArray = [];
   item.spriteCount = 0;
 
@@ -87,11 +79,7 @@ function loadItem(name) {
       item.spriteCount += constructImageCount;
     }
   }
-  // Load the weapon if item has one
-  if (item.weaponType) {
-    bullets.load(item.weaponType);
-  }
-
+  return item.weaponType;
 }
 
 /* The default add() method used by all our game entities*/
@@ -205,5 +193,9 @@ function isItemDead(uid) {
 }
 
 module.exports = {
-  loader
+  loader,
+  addItem,
+  loadItem,
+  isValidTarget,
+  findTargetsInSight,
 };

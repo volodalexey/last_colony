@@ -1,12 +1,16 @@
+const
+  canvas = document.createElement('canvas'),
+  context = canvas.getContext('2d');
+
 const fog = {
   grid: [],
   context: null,
-  initLevel(canvas, context, mapGridWidth, mapGridHeight, gridSize) {
+  initLevel(mapGridWidth, mapGridHeight, gridSize) {
     // Set fog canvas to the size of the map
     canvas.width = mapGridWidth * gridSize;
     canvas.height = mapGridHeight * gridSize;
     // Set the fog grid for the player to array with all values set to 1
-    var defaultFogGrid = [];
+    let defaultFogGrid = [];
     for (let i = 0; i < mapGridHeight; i++) {
       defaultFogGrid[i] = [];
       for (let j = 0; j < mapGridWidth; j++) {

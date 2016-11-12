@@ -2,12 +2,12 @@ const
   PATH = require('../../common/constants').PATH,
   React = require('react'),
   FormattedMessage = require('react-intl').FormattedMessage,
-  en_keys = require('../js/nls/en/common').keys;
+  en_keys = require('../js/nls/en/common').keys,
+  singlePlayer = require('../js/game/singleplayer');
 
 var
   game_foreground_canvas, game_foreground_context,
   game_background_canvas, game_background_context;
-// const engine = require('../js/game/engine');
 
 class SinglePlayer extends React.Component {
 
@@ -17,9 +17,10 @@ class SinglePlayer extends React.Component {
   }
  
   componentDidMount() {
-    // engine.init();
     game_foreground_context = game_foreground_canvas.getContext('2d');
     game_background_context = game_background_canvas.getContext('2d');
+    singlePlayer.start();
+    singlePlayer.play();
   }
   
   componentWillUnmount() {

@@ -25,6 +25,7 @@ const
       'GIT_BRANCH': gitRevSync.branch(),
       'GIT_LONG': gitRevSync.long(),
       'VERSION': json_package.version,
+      favicon: './favicon.ico',
       template: path.join(__dirname, d_ejs, 'index.ejs'),
       inject: 'body'
     }),
