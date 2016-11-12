@@ -1,4 +1,4 @@
-var loader = {
+const loader = {
   loaded: true,
   loadedCount: 0, // Assets that have been loaded so far
   totalCount: 0, // Total number of assets that need to be loaded
@@ -205,5 +205,5 @@ function isItemDead(uid) {
 }
 
 module.exports = {
-
+  loader
 };

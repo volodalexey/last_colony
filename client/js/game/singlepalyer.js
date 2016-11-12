@@ -1,12 +1,14 @@
+const
+  engine = require('./engine'),
+  maps = require('./maps'),
+  loader = require('./common').loader;
 
 const singleplayer = {
   start() {
     singleplayer.currentLevel = 2;
-    game.type = "singleplayer";
-    game.team = "blue";
-
-    // Finally start the level
-    singleplayer.startCurrentLevel();
+    engine.type = "singleplayer";
+    engine.team = "blue";
+    this.startCurrentLevel();
   },
   exit: function() {
     // Show the starting menu layer
@@ -14,17 +16,10 @@ const singleplayer = {
     document.querySelector('#gamestartscreen').style.display = 'block';
   },
   currentLevel: 0,
-  startCurrentLevel: function() {
-    // Load all the items for the level
-    var level = maps.singleplayer[singleplayer.currentLevel];
-
-    // Don't allow player to enter mission until all assets for the level are loaded
-    document.querySelector("#entermission").disabled = false;
-
-    // Load all the assets for the level
-    game.currentMapImage = loader.loadImage(level.mapImage);
-    game.currentLevel = level;
-
+  startCurrentLevel() {
+    var level = maps.singleplayer[this.currentLevel];
+    engine.currentMapImage = loader.loadImage(level.mapImage);
+    engine.currentLevel = level;
     game.offsetX = level.startX * game.gridSize;
     game.offsetY = level.startY * game.gridSize;
 

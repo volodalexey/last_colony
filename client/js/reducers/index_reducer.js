@@ -7,7 +7,7 @@ const
     password: '',
     pending_credentials: false,
     invalid_credentials: false,
-    logged_in_credentials: false
+    logged_in_credentials: true
   };
 
 const reducer = (state = INITIAL_STATE, action) => {
