@@ -43,7 +43,7 @@ var maps = {
 
 				/* Two damaged enemy scout-tanks patroling the area*/
 				{"type":"vehicles","name":"scout-tank","x":40,"y":20,"direction":4,"team":"green","uid":-2,"life":20,"orders":{"type":"patrol","from":{"x":34,"y":20},"to":{"x":42,"y":25}}},								
-				{"type":"vehicles","name":"scout-tank","x":14,"y":0,"direction":4,"team":"green","uid":-5,"life":20,"orders":{"type":"patrol","from":{"x":14,"y":0},"to":{"x":14,"y":14}}},
+				{"type":"vehicles","name":"scout-tank","x":14,"y":0,"direction":4,"team":"green","uid":-5,"life":20,"orders":{"type":"patrol","from":{"x":14,"y":0},"to":{"x":14,"y":14}}}
 				
 			],	
 
@@ -115,9 +115,9 @@ var maps = {
 					"action":function(){
 						singleplayer.endLevel(true);
 					}
-				},
+				}
 						
-			],	
+			]
 		},
 		{
 			"name":"Assault",
@@ -159,7 +159,7 @@ var maps = {
 				{"type":"vehicles","name":"scout-tank","x":55,"y":36,"direction":4,"team":"green","orders":{"type":"hunt"}},				
 				{"type":"vehicles","name":"scout-tank","x":53,"y":36,"direction":4,"team":"green","orders":{"type":"hunt"}},				
 		
-				/* Enemies patroling the area */
+				/* Enemies patrolling the area */
 				{"type":"vehicles","name":"scout-tank","x":5,"y":5,"direction":4,"team":"green","orders":{"type":"patrol","from":{"x":5,"y":5},"to":{"x":20,"y":20}}},				
 				{"type":"vehicles","name":"scout-tank","x":5,"y":15,"direction":4,"team":"green","orders":{"type":"patrol","from":{"x":5,"y":15},"to":{"x":20,"y":30}}},				
 				{"type":"vehicles","name":"scout-tank","x":25,"y":5,"direction":4,"team":"green","orders":{"type":"patrol","from":{"x":25,"y":5},"to":{"x":25,"y":20}}},
@@ -194,7 +194,8 @@ var maps = {
 			        }
 			    },
 				// Construct a couple of bad guys to hunt the player every time enemy has enough money
-				{"type":"timed","time":60000,"repeat":true,
+				// {"type":"timed","time":60000,"repeat":true,
+				{"type":"timed","time":1000,"repeat":true,
 				    "action":function(){
 						if(game.cash["green"]>1000){
 							game.sendCommand([-12,-13],{type:"construct-unit",details:{type:"vehicles",name:"scout-tank",orders:{"type":"hunt"}}});						
@@ -234,7 +235,7 @@ var maps = {
 				    "action":function(){
 				        singleplayer.endLevel(true);
 					}
-				},
+				}
 			]
 		},	
 		{
